@@ -1,0 +1,214 @@
+{% extends 'layoutadm.html' %}
+
+{% block title %}Ydal{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+    <div class="cardtext">
+        <h1 class="text-dark">Удаление пользователя</h1>
+    </div>
+    <br>
+     <form method="post" class="needs-validation" novalidate>
+    <div class="form-group">
+        <div class="cardtab">
+            <label for="user">Выберите пользователя</label>
+        <select class="form-control" name="user" id="user" required>
+            {% for i in users %}
+                <option value="{{i[0]}}">{{i}}</option>
+            {% endfor %}
+        </select>
+        </div>
+    </div>
+          <button class="btn btn-outline-light" type="submit"> Удалить </button>
+     </form>
+
+
+
+
+
+
+</div>
+<script>
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+
+
+
+<!-- Инициализация виджета "Bootstrap datetimepicker" -->
+<script>
+    $(function () {
+      $('#datetimepicker1').datetimepicker(
+        { format: 'HH:mm', locale: 'ru' }
+      );
+    });
+</script>
+
+
+
+<!-- Здесь будет форма -->
+
+
+
+<!-- Подключаем библиотеку jQuery -->
+<script data-require="jquery@3.1.1" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Подключаем локаль библиотеки moment -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/ru.js"></script>
+<!-- Подключаем библиотеку moment -->
+<script data-require="MomentJS@2.10.0" data-semver="2.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<!-- Подключаем js-файл Bootstrap -->
+<script data-require="bootstrap@3.3.7" data-semver="3.3.7" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Подключаем js-файл библиотеки DateTimePicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+<style>
+    body{
+    background: -webkit-linear-gradient(left, #FF9133, #F79DA7);
+    border-radius: 10px;
+    font-family: "Raleway", sans-serif;
+    margin: 0;
+
+}
+
+.btn-primary
+{
+    background-color: #E7003E;
+    color: white;
+    border: 1px solid #E7003E;
+}
+
+.btn-primary:hover
+{
+    background-color: white;
+    color: #E7003E;
+    border: 1px solid #E7003E;
+
+}
+
+
+.card{
+  width: 400px;
+  border: none;
+  border-radius: 10px;
+
+  background-color: #fff;
+}
+
+.cardtab {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.cardtext
+{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+
+.stats{
+
+      background: #20B2AA !important;
+
+    color: #000 !important;
+}
+.articles{
+  font-size:10px;
+  color: #20B2AA;
+}
+.number1{
+  font-weight:500;
+}
+.followers{
+    font-size:10px;
+  color: #a1aab9;
+
+}
+.number2{
+  font-weight:500;
+}
+.rating{
+    font-size:10px;
+  color: #20B2AA;
+}
+.number3{
+  font-weight:500;
+}
+
+</style>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://unpkg.com/imask"></script> <!-- Подключаем плагин через CDN -->
+    <script src="js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const mask = (dataValue, options) => { // создаем универсальную функцию
+    const elements = document.querySelectorAll(`[data-mask="${dataValue}"]`) // ищем поля ввода по селектору с переданным значением data-атрибута
+    if (!elements) return // если таких полей ввода нет, прерываем функцию
+
+    elements.forEach(el => { // для каждого из полей ввода
+      IMask(el, options) // инициализируем плагин imask для необходимых полей ввода с переданными параметрами маски
+    })
+  }
+
+  // Используем наше функцию mask для разных типов масок
+
+  // Маска для номера телефона
+  mask('phone', {
+    mask: '+{7}(000)000-00-00'
+  })
+
+  // Маска для почтового индекса
+  mask('postalCode', {
+    mask: '000000' // шесть цифр
+  })
+
+  // Маска для даты
+  mask('date', {
+    mask: Date,
+    min: new Date(1900, 0, 1), // минимальная дата 01.01.1900
+  })
+
+  // Маска для числа
+  mask('number', {
+    mask: Number,
+    thousandsSeparator: ' ' // разделитель тысяч в числе
+  })
+
+})
+
+</script>
+{% endblock %}

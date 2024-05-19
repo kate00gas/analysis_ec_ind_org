@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link type="text/css" href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <section class="main-section">
+        <img src="{{ url_for('static', filename='images/hea2.svg') }}" class="background2" >
+
+        <div class="container">
+            <header class="header row">
+                <div class="col">
+                    <div class="logo">
+                        <img src="{{ url_for('static', filename='images/logo.svg') }}">
+                    </div>
+                </div>
+                <div class="d-flex col flex-md-row">
+
+                        <nav class=" mt-2 ms-md-auto menu">
+                        <ul>
+                            <li> <a class="me-3 py-2 text-decoration-none" href="/"> Главная  </a> </li>
+                            <li> <a  class="me-3 py-2 text-decoration-none"href="/login"> Войти </a> </li>
+                            <li> <a class="me-3 py-2 text-decoration-none activ" href="/registr"> Регистрация </a> </li>
+                        </ul>
+                    </nav>
+
+                </div>
+
+            </header>
+        </div>
+        <div class="main-section-content container">
+            <div class="row">
+            <div class="col">
+                <h1> <font color="#00B74A"> АНАЛИЗ </font> <font color="#E7003E"> - просто </font> <br>
+                    <font color="#E7003E"> и эффективно </font> </h1>
+                <p class="mainp">  <font color="#00B74A"> Добро пожаловать в </font> <font color="#E7003E"> EconoMetrics </font> <font color="#00B74A">  — ваш надежный инструмент для глубокого анализа финансовых и
+                экономических показателей компании.</font> </p>
+                 <div class="row">
+                    <a href="/login" class="btn btn-primary" >Войти</a>
+                    <a href="/registr" class="btn btn-success" >Зарегистрироваться</a>
+                     </div>
+            </div>
+             <div class="col">
+                <img src="{{ url_for('static', filename='images/graft.png') }}" class="gre">
+             </div>
+            </div>
+        </div>
+
+        <div class="image-container">
+    <img src="{{ url_for('static', filename='images/fon2.jpg') }}" class="back" alt="Background">
+    <div class="card-content">
+        <h4>ДОСТУПНОСТЬ И УДОБСТВО</h4>
+        <p class="pcard"> <font color="#00b74a"> Интуитивно понятный интерфейс, который позволяет быстро вводить и
+            обрабатывать данные без сложностей. </font> </p>
+        <h4>ТОЧНОСТЬ И ЗАЩИТА ДАННЫХ</h4>
+        <p class="pcard"> <font color="#00b74a">Современные методы шифрования и защиты информации обеспечивают безопасность и
+            конфиденциальность ваших данных.  </font></p>
+        <h4 >ГЛУБОКИЙ АНАЛИЗ И ОТЧЕТНОСТЬ</h4>
+        <p class="pcard"> <font color="#00b74a">Наши отчеты включают всесторонний анализ финансового положения и эффективность деятельности организации,
+            предоставляя важные инсайты для вашего бизнеса.  </font></p>
+    </div>
+</div>
+
+        <div class="containeranaliz">
+    <div>
+        <h2 class="heading"><font color="#E7003E">АНАЛИЗ</font></h2>
+        <h3 class="heading"><font color="#00B74A">за 3 шага!</font></h3>
+    </div>
+    <p class="psl">
+        <font color="#e7003e">
+            Наш сервис предоставляет комплексный анализ бухгалтерского
+            баланса и отчетов о финансовых результатах, помогая вам принимать обоснованные управленческие решения.
+        </font>
+    </p>
+</div>
+
+         <div class="image-container">
+             <img src="{{ url_for('static', filename='images/card.jpg') }}" class="carim"  alt="Background">
+        </div>
+
+         <div class="container">
+        <div class="block">
+
+            <h3 class="heading"><font color="#E7003E">Удивительно простое решение <br> для сложных финансовых задач!</font></h3>
+            <p class="mainp"> <font color=#E7003E"> Присоединяйтесь к EconoMetrics и начните принимать <br>
+                более обоснованные решения сегодня! </font> </p>
+
+            <div class="row">
+                    <a href="/login" class="btn btn-primary" >Войти</a>
+                    <a href="/registr" class="btn btn-success" >Зарегистрироваться</a>
+            </div>
+        </div>
+         </div>
+
+
+        <div class="image-container2">
+    <img src="{{ url_for('static', filename='images/foot.svg') }}" class="back2" alt="Footer">
+    <div class="footer-text">
+        <span class="left-text">©2024</span>
+        <span class="right-text">Designed by Freepik</span>
+    </div>
+</div>
+
+
+
+    </section>
+</body>
+</html>

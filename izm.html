@@ -1,0 +1,417 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <h1 class="text-center">Измените данные для
+{% if par == 0 or par == 1 %}
+    Внеоборотных и оборотных активов {% else %} {% endif %}
+
+        {% if par == 2 or par == 3 or par == 4 %}
+    Капиталов и резервов, Долгосрочных вложений, Краткосрочных вложений {% else %} {% endif %}
+
+        {% if par == 5 %}
+    Финансовые результаты {% else %} {% endif %}
+
+    </h1>
+
+    <h2> Исправьте нужные поля, остальные оставьте без изменений</h2>
+    <h4>*действие повлечет за собой изменение других показателей!</h4>
+    <form id="form" method="POST" class="needs-validation" novalidate>
+{% if par == 0 or par == 1 %}
+    <div class="form-group">
+
+        <p> Дата: {{date}} </p>
+
+        <label for="inn" class="cols-sm-2 control-label">ИНН</label>
+         <input type="number" class="form-control" name="inn" id="inn" value="{{par_izm[1]}}"  placeholder="ИНН" required>
+        <div class="invalid-feedback"> Вы не ввели ИНН </div> <br>
+
+          <label for="pok1"> </label>
+        <label for="pok1" class="cols-sm-2 control-label">Нематериальные активы</label>
+        <input type="number" class="form-control" name="pok1" id="pok1" value="{{par_izm[4]}}" placeholder="Нематериальные активы" required>
+        <div class="invalid-feedback"> Вы не ввели нематериальные активы </div> <br>
+
+         <label for="pok2" class="cols-sm-2 control-label">Результаты исследований и разработок</label>
+          <input type="number" class="form-control" name="pok2" id="pok2" value="{{par_izm[5]}}" required>
+        <div class="invalid-feedback"> Вы не ввели результаты исследований и разработок </div> <br>
+
+         <label for="pok3" class="cols-sm-2 control-label">Нематериальные поисковые активы</label>
+          <input type="number" class="form-control" name="pok3" id="pok3" value="{{par_izm[6]}}" required>
+        <div class="invalid-feedback"> Вы не ввели нематериальные поисковые активы </div> <br>
+
+         <label for="pok4" class="cols-sm-2 control-label">Материальные поисковые активы</label>
+          <input type="number" class="form-control" name="pok4" id="pok4" value="{{par_izm[7]}}" required>
+        <div class="invalid-feedback"> Вы не ввели материальные поисковые активы </div> <br>
+
+         <label for="pok5" class="cols-sm-2 control-label">Оснвовные средства</label>
+          <input type="number" class="form-control" name="pok5" id="pok5" value="{{par_izm[8]}}" required>
+        <div class="invalid-feedback"> Вы не ввели оснвовные средства </div> <br>
+
+         <label for="pok6" class="cols-sm-2 control-label">Доходные вложения в материальные ценности</label>
+           <input type="number" class="form-control" name="pok6" id="pok6" value="{{par_izm[9]}}" required>
+        <div class="invalid-feedback"> Вы не ввели доходные вложения в материальные ценности </div> <br>
+
+         <label for="pok7" class="cols-sm-2 control-label">Финансовые вложения</label>
+           <input type="number" class="form-control" name="pok7" id="pok7" value="{{par_izm[10]}}" required>
+        <div class="invalid-feedback"> Вы не ввели финансовые вложения </div> <br>
+
+         <label for="pok8" class="cols-sm-2 control-label">Отложенные налоговые активы</label>
+           <input type="number" class="form-control" name="pok8" id="pok8" value="{{par_izm[11]}}" required>
+        <div class="invalid-feedback"> Вы не ввели отложенные налоговые активы </div> <br>
+
+         <label for="pok9" class="cols-sm-2 control-label">Прочие внеоборотные активы</label>
+           <input type="number" class="form-control" name="pok9" id="pok9" value="{{par_izm[12]}}" required>
+        <div class="invalid-feedback"> Вы не ввели прочие внеоборотные активы </div> <br>
+
+         <label for="pok10" class="cols-sm-2 control-label">Авансы на капитальное стоительство</label>
+           <input type="number" class="form-control" name="pok10" id="pok10" value="{{par_izm[13]}}" required>
+        <div class="invalid-feedback"> Вы не ввели авансы на капитальное стоительство </div> <br>
+
+         <label for="pok11" class="cols-sm-2 control-label">Незавершенное строительство</label>
+           <input type="number" class="form-control" name="pok11" id="pok11" value="{{par_izm[14]}}" required>
+        <div class="invalid-feedback"> Вы не ввели незавершенное строительство </div> <br>
+
+        <h3> Оборотные активы</h3>
+
+         <label for="pok12" class="cols-sm-2 control-label">Запасы</label>
+         <input type="number" class="form-control" name="pok12" id="pok12" value="{{par_izm2[4]}}" placeholder="Запасы" required>
+        <div class="invalid-feedback"> Вы не ввели запасы </div> <br>
+
+         <label for="pok13" class="cols-sm-2 control-label">Налог на добавленную стоимость по приобретенным ценностям</label>
+         <input type="number" class="form-control" name="pok13" id="pok13" value="{{par_izm2[5]}}" required>
+        <div class="invalid-feedback"> Вы не ввели налог на добавленную стоимость по приобретенным ценностям </div> <br>
+
+         <label for="pok14" class="cols-sm-2 control-label">Дебиторская задолжность</label>
+         <input type="number" class="form-control" name="pok14" id="pok14" value="{{par_izm2[6]}}" required>
+        <div class="invalid-feedback"> Вы не ввели дебиторская задолжность </div> <br>
+
+         <label for="pok15" class="cols-sm-2 control-label">Финансовые вложения</label>
+         <input type="number" class="form-control" name="pok15" id="pok15" value="{{par_izm2[7]}}"  required>
+        <div class="invalid-feedback"> Вы не ввели финансовые вложения </div> <br>
+
+         <label for="pok16" class="cols-sm-2 control-label">Денежные средства и денежные эквиваленты</label>
+         <input type="number" class="form-control" name="pok16" id="pok16" value="{{par_izm2[8]}}" required>
+        <div class="invalid-feedback"> Вы не ввели денежные средства и денежные эквиваленты </div> <br>
+
+         <label for="pok17" class="cols-sm-2 control-label">Прочие оборотные активы</label>
+         <input type="number" class="form-control" name="pok17" id="pok17" value="{{par_izm2[9]}}" required>
+        <div class="invalid-feedback"> Вы не ввели прочие оборотные активы </div> <br>
+
+
+
+{% else %} {% endif %}
+{% if par == 2 or par == 3 or par == 4 %}
+
+       <p> Дата: {{date}} </p>
+
+        <label for="inn" class="cols-sm-2 control-label">ИНН</label>
+         <input type="number" class="form-control" name="inn2" id="inn2" value="{{kap[1]}}"  placeholder="ИНН" required>
+        <div class="invalid-feedback"> Вы не ввели ИНН </div> <br>
+
+
+          <h3> Капитал и резервы </h3>
+        <label for="pok1"> Уставной капитал </label>
+        <input type="number" class="form-control" name="pok1p" id="pok1p" value="{{kap[4]}}" required>
+        <div class="invalid-feedback"> Вы не ввели уставной капитал </div> <br>
+
+        <label for="pok1"> Собственные акции, выкупленные у акционеров </label>
+          <input type="number" class="form-control" name="pok2p" id="pok2p" value="{{kap[5]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Переоценка внеоборотных активов </label>
+          <input type="number" class="form-control" name="pok3p" id="pok3p" value="{{kap[6]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Добавочный капитал (без переоценки) </label>
+          <input type="number" class="form-control" name="pok4p" id="pok4p" value="{{kap[7]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Резервный капитал </label>
+          <input type="number" class="form-control" name="pok5p" id="pok5p" value="{{kap[8]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Нераспределенная прибыль </label>
+           <input type="number" class="form-control" name="pok6p" id="pok6p" value="{{kap[9]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+
+
+         <h3> Долгосрочные обязательства </h3>
+
+        <label for="pok1"> Заемные средства </label>
+           <input type="number" class="form-control" name="pok7p" id="pok7p" value="{{dolg[4]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Отложенные налоговые обязательства </label>
+           <input type="number" class="form-control" name="pok8p" id="pok8p" value="{{dolg[5]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Оценочные обязательства </label>
+           <input type="number" class="form-control" name="pok9p" id="pok9p" value="{{dolg[6]}}"  required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Прочие обязательства </label>
+           <input type="number" class="form-control" name="pok10p" id="pok10p" value="{{dolg[7]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+
+
+          <h3> Краткосрочные обязательства </h3>
+        <label for="pok1"> Заемные средства </label>
+           <input type="number" class="form-control" name="pok11p" id="pok11p" value="{{krat[4]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Кредиторская задолженность </label>
+         <input type="number" class="form-control" name="pok12p" id="pok12p" value="{{krat[5]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Доходы будущих периодов </label>
+         <input type="number" class="form-control" name="pok13p" id="pok13p" value="{{krat[6]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Оценочные обязательства </label>
+         <input type="number" class="form-control" name="pok14p" id="pok14p" value="{{krat[7]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+        <label for="pok1"> Прочие обязательства </label>
+         <input type="number" class="form-control" name="pok15p" id="pok15p" value="{{krat[8]}}" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+{% else %} {% endif %}
+
+        {% if par == 5 %}
+
+        <p> Дата: {{date}} </p>
+
+        <label for="inn" class="cols-sm-2 control-label">ИНН</label>
+         <input type="number" class="form-control" name="inn3" id="inn3" value="{{fin_res_rashch[22]}}"  placeholder="ИНН" required>
+        <div class="invalid-feedback"> Вы не ввели ИНН </div> <br>
+
+        <label for="fin1"> Выручка </label>
+        <input type="number" class="form-control" name="fin1" id="fin1" value="{{fin_res_rashch[3]}}" required>
+        <div class="invalid-feedback"> Вы не ввели выручку </div> <br>
+
+        <label for="fin2"> Себестоимость продаж </label>
+          <input type="number" class="form-control" name="fin2" id="fin2" value="{{fin_res_rashch[4]}}" required>
+        <div class="invalid-feedback"> Вы не ввели себестоимость продаж </div> <br>
+
+        <label for="fin3"> Коммерческие расходы </label>
+          <input type="number" class="form-control" name="fin3" id="fin3" value="{{fin_res_rashch[6]}}" required>
+        <div class="invalid-feedback"> Вы не ввели коммерческие расходы </div> <br>
+
+        <label for="fin4"> Управленческие расходы </label>
+          <input type="number" class="form-control" name="fin4" id="fin4" value="{{fin_res_rashch[7]}}" required>
+        <div class="invalid-feedback"> Вы не ввели управленческие расходы </div> <br>
+
+        <label for="fin5"> Доходы от участия в других организациях </label>
+          <input type="number" class="form-control" name="fin5" id="fin5" value="{{fin_res_rashch[9]}}" required>
+        <div class="invalid-feedback"> Вы не ввели доходы от участия в других организациях</div> <br>
+
+        <label for="fin6"> Проценты к получению </label>
+           <input type="number" class="form-control" name="fin6" id="fin6" value="{{fin_res_rashch[10]}}" required>
+        <div class="invalid-feedback"> Вы не ввели проценты к получению </div> <br>
+
+        <label for="fin7"> Проценты к уплате </label>
+           <input type="number" class="form-control" name="fin7" id="fin7" value="{{fin_res_rashch[11]}}" required>
+        <div class="invalid-feedback"> Вы не ввели проценты к уплате </div> <br>
+
+        <label for="fin8"> Прочие доходы </label>
+           <input type="number" class="form-control" name="fin8" id="fin8" value="{{fin_res_rashch[12]}}" required>
+        <div class="invalid-feedback"> Вы не ввели прочие доходы </div> <br>
+
+        <label for="fin9"> Прочие расходы </label>
+           <input type="number" class="form-control" name="fin9" id="fin9" value="{{fin_res_rashch[13]}}"  required>
+        <div class="invalid-feedback"> Вы не ввели прочие расходы </div> <br>
+
+        <label for="fin10"> Текущий налог на прибыль </label>
+           <input type="number" class="form-control" name="fin10" id="fin10" value="{{fin_res_rashch[16]}}" required>
+        <div class="invalid-feedback"> Вы не ввели текущий налог на прибыль </div> <br>
+
+        <label for="fin11"> Отложенный налог на прибыль </label>
+           <input type="number" class="form-control" name="fin11" id="fin11" value="{{fin_res_rashch[17]}}" required>
+        <div class="invalid-feedback"> Вы не ввели отложенный налог на прибыль </div> <br>
+
+        <label for="fin12"> Изменение отложенных налоговых обязательств </label>
+           <input type="number" class="form-control" name="fin12" id="fin12" value="{{fin_res_rashch[18]}}" required>
+        <div class="invalid-feedback"> Вы не ввели изменение отложенных налоговых обязательств </div> <br>
+
+        <label for="fin13"> Изменение отложенных налоговых активов </label>
+           <input type="number" class="form-control" name="fin13" id="fin13" value="{{fin_res_rashch[19]}}" required>
+        <div class="invalid-feedback"> Вы не ввели изменение отложенных налоговых активов </div> <br>
+
+        <label for="fin14"> Прочее </label>
+           <input type="number" class="form-control" name="fin14" id="fin14" value="{{fin_res_rashch[20]}}" required>
+        <div class="invalid-feedback"> Вы не ввели: прочее </div> <br>
+
+{% else %} {% endif %}
+
+        <button class="btn btn-primary" type="submit"> Изменить </button>
+    </div>
+    </form>
+
+</div>
+<script>
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+
+
+
+<!-- Инициализация виджета "Bootstrap datetimepicker" -->
+<script>
+    $(function () {
+      $('#datetimepicker1').datetimepicker(
+        { format: 'HH:mm', locale: 'ru' }
+      );
+    });
+</script>
+
+
+
+<!-- Здесь будет форма -->
+
+
+
+<!-- Подключаем библиотеку jQuery -->
+<script data-require="jquery@3.1.1" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Подключаем локаль библиотеки moment -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/ru.js"></script>
+<!-- Подключаем библиотеку moment -->
+<script data-require="MomentJS@2.10.0" data-semver="2.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<!-- Подключаем js-файл Bootstrap -->
+<script data-require="bootstrap@3.3.7" data-semver="3.3.7" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Подключаем js-файл библиотеки DateTimePicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+<style>
+    body{
+    background: -webkit-linear-gradient(left, #FF9133, #F79DA7);
+    border-radius: 10px;
+
+}
+
+.btn-outline-light
+{
+    color: #E7003E;
+    border: 1px solid #E7003E;
+}
+
+.btn-outline-light:hover
+{
+    color: #E7003E;
+}
+
+
+.card{
+  width: 400px;
+  border: none;
+  border-radius: 10px;
+
+  background-color: #fff;
+}
+
+
+
+.stats{
+
+      background: #20B2AA !important;
+
+    color: #000 !important;
+}
+.articles{
+  font-size:10px;
+  color: #20B2AA;
+}
+.number1{
+  font-weight:500;
+}
+.followers{
+    font-size:10px;
+  color: #a1aab9;
+
+}
+.number2{
+  font-weight:500;
+}
+.rating{
+    font-size:10px;
+  color: #20B2AA;
+}
+.number3{
+  font-weight:500;
+}
+
+</style>
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://unpkg.com/imask"></script> <!-- Подключаем плагин через CDN -->
+    <script src="js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const mask = (dataValue, options) => { // создаем универсальную функцию
+    const elements = document.querySelectorAll(`[data-mask="${dataValue}"]`) // ищем поля ввода по селектору с переданным значением data-атрибута
+    if (!elements) return // если таких полей ввода нет, прерываем функцию
+
+    elements.forEach(el => { // для каждого из полей ввода
+      IMask(el, options) // инициализируем плагин imask для необходимых полей ввода с переданными параметрами маски
+    })
+  }
+
+  // Используем наше функцию mask для разных типов масок
+
+  // Маска для номера телефона
+  mask('phone', {
+    mask: '+{7}(000)000-00-00'
+  })
+
+  // Маска для почтового индекса
+  mask('postalCode', {
+    mask: '000000' // шесть цифр
+  })
+
+  // Маска для даты
+  mask('date', {
+    mask: Date,
+    min: new Date(1900, 0, 1), // минимальная дата 01.01.1900
+  })
+
+  // Маска для даты
+  mask('date3', {
+    mask: Date,
+    min: new Date(1900, 0, 1), // минимальная дата 01.01.1900
+  })
+
+  // Маска для числа
+  mask('number', {
+    mask: Number,
+    thousandsSeparator: ' ' // разделитель тысяч в числе
+  })
+
+})
+
+</script>
+{% endblock %}

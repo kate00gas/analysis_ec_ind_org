@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Register</title>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+  <!-- Google Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+ </head>
+
+<style>
+    body {
+  background-color: #435165;
+  margin: 0;
+}
+
+.login-box
+ {
+  height: 50%;
+  width: 30%;
+  border: 1px solid grey;
+  margin-left: 35%;
+  margin-top: 10%;
+  position: relative;
+       box-shadow: 21px 12px 24px 10px rgba(0, 0, 0, .5);
+       background: #dadada;
+ }
+ .login-header
+ {
+  text-align: center;
+  font-family: "vardhana",cursive;
+  font-size: 35px;
+  background: linear-gradient(to bottom, #FF9133 0%, #EC3063 100%);
+  color:#fff;
+  position: relative;
+       box-shadow: 1px 3px 14px  rgba(0, 0, 0, .5);
+ }
+ .login-body
+ {
+  padding: 20px;
+  line-height: 2;
+ }
+.msg {
+color: #721c24;
+   background-color: #eb7e2a;
+   border-color: #f5c6cb;
+padding: .75rem 1.25rem;
+   margin-bottom: 1rem;
+   border: 1px solid transparent;
+   border-radius: .25rem;
+}
+.main{
+ margin-top:50px;
+}
+
+h1.title {
+font-size: 50px;
+font-family: 'Passion One', cursive;
+font-weight: 400;
+}
+
+hr{
+width: 10%;
+color: #fff;
+}
+
+.form-group{
+margin-bottom: 15px;
+}
+
+label{
+margin-bottom: 15px;
+}
+
+input,
+input::-webkit-input-placeholder {
+   font-size: 11px;
+   padding-top: 3px;
+}
+
+.main-login{
+ background-color: #fff;
+   /* shadows and rounded borders */
+   -moz-border-radius: 2px;
+   -webkit-border-radius: 2px;
+   border-radius: 2px;
+   -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+   -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+
+}
+.form-control {
+   height: auto!important;
+padding: 8px 12px !important;
+}
+.input-group {
+   -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+   -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+   box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+}
+.main-center{
+ margin-top: 30px;
+ margin: 0 auto;
+ max-width: 400px;
+   padding: 10px 40px;
+ background: -webkit-linear-gradient(left, #FF9133, #EC3063);
+  background: linear-gradient(to right, #FF9133, #EC3063);
+    color: #FFF;
+   text-shadow: none;
+-webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+-moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.31);
+
+}
+span.input-group-addon i {
+   color: #fff;
+   font-size: 17px;padding:10px;
+}
+
+.login-button{
+margin-top: 5px;
+}
+
+.login-register{
+font-size: 11px;
+text-align: center;
+}
+
+.site-header {
+   background-color: rgba(0, 0, 0, .85);
+   -webkit-backdrop-filter: saturate(180%) blur(20px);
+   backdrop-filter: saturate(180%) blur(20px);
+}
+.site-header a {
+color:#fff;
+}
+
+
+.btn-success
+{
+border: 1px solid #e7003e;
+background-color: #FFFFFF;
+color: #E7003E;
+border-radius: 35px;
+stroke-width: 1px;
+font-size: 20px;
+width: 241px;
+height: 48px;
+position: relative;
+z-index: 10;
+margin-left: 30px;
+}
+
+.btn-success:hover {
+  background-color: #EC3063;
+  color: white;
+  border: 1px solid #EC3063;
+  font-size: 20px;
+  width: 241px;
+  height: 48px;
+  position: relative;
+  z-index: 10;
+  margin-left: 30px;
+}
+
+.btn-light:hover {
+ color: #EC3063;
+ background-color: white;
+ border-radius: 35px;
+ stroke-width: 1px;
+ font-size: 20px;
+ width: 128px;
+ height: 48px;
+ margin-left: -30px;
+}
+
+.btn-light{
+
+ border-radius: 35px;
+ stroke-width: 1px;
+ font-size: 20px;
+ width: 128px;
+ height: 48px;
+ margin-left: -30px;
+}
+</style>
+
+<body style="background-color: #f5f5f5;">
+ <div class="container ">
+   <div class="row main">
+    <div class="main-login main-center rounded"> <br>
+    <h5 class="text-center">Регистрация нового аккаунта</h5>
+     <form action="{{ url_for('registradm') }}" method="post" autocomplete="off">
+      <div class="form-group">
+       <label for="fullname" class="cols-sm-2 control-label">Введите имя</label>
+       <div class="cols-sm-10">
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+         <input type="text" class="form-control" name="fullname" id="fullname"  placeholder="Enter your Name"/>
+        </div>
+       </div>
+      </div>
+      <div class="form-group">
+       <label for="email" class="cols-sm-2 control-label">Введите Email</label>
+       <div class="cols-sm-10">
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+         <input type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+        </div>
+       </div>
+      </div>
+
+
+      <div class="form-group">
+       <label for="username" class="cols-sm-2 control-label">Введите username</label>
+       <div class="cols-sm-10">
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+         <input type="text" class="form-control" name="username" id="username" placeholder="Enter your Username" required>
+        </div>
+       </div>
+      </div>
+
+      <div class="form-group">
+       <label for="password" class="cols-sm-2 control-label">Придумайте пароль</label>
+       <div class="cols-sm-10">
+        <div class="input-group">
+         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+         <input type="password" class="form-control" name="password" placeholder="Password" id="password" required  placeholder="Enter your Password"/>
+        </div>
+       </div>
+      </div>
+
+
+      <div class="form-group" id="radio">
+        {% with messages = get_flashed_messages()  %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+       <p style="padding: 10px 10px 2px;">
+       <input type="submit" value="Зарегистрироваться" class="form-control btn btn-success text-center " name="">
+       <p style="padding: 5px 130px 1px;">
+       <a href="{{ url_for('login') }}" class="btn btn-light btn-outline-light">Войти</a></p>
+
+      </div>
+
+     </form>
+    </div>
+   </div>
+  </div>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://unpkg.com/imask"></script> <!-- Подключаем плагин через CDN -->
+    <script src="js/main.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const mask = (dataValue, options) => { // создаем универсальную функцию
+    const elements = document.querySelectorAll(`[data-mask="${dataValue}"]`) // ищем поля ввода по селектору с переданным значением data-атрибута
+    if (!elements) return // если таких полей ввода нет, прерываем функцию
+
+    elements.forEach(el => { // для каждого из полей ввода
+      IMask(el, options) // инициализируем плагин imask для необходимых полей ввода с переданными параметрами маски
+    })
+  }
+
+  // Используем наше функцию mask для разных типов масок
+
+  // Маска для номера телефона
+  mask('phone', {
+    mask: '+{7}(000)000-00-00'
+  })
+
+  // Маска для почтового индекса
+  mask('postalCode', {
+    mask: '000000' // шесть цифр
+  })
+
+  // Маска для даты
+  mask('date', {
+    mask: Date,
+    min: new Date(1900, 0, 1), // минимальная дата 01.01.1900
+  })
+
+  // Маска для числа
+  mask('number', {
+    mask: Number,
+    thousandsSeparator: ' ' // разделитель тысяч в числе
+  })
+
+})
+
+</script>
+
+</body>
+</html>

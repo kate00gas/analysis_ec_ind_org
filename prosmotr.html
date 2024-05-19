@@ -1,0 +1,528 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+{% if vn_aktive_len == 0 and ob_aktive_len == 0 and kap_reserv_len == 0 and kratkosr_obzat_len == 0 and
+dolgosr_obzat_len == 0 and nalog_na_prib_len == 0 and fin_res_len == 0 %}
+
+<div class="cardtext3">
+<p class="psl text-center"> Для просмотра страницы введите данные о бухгалтерском балансе и отчете о финансовых результатах!</p>
+</div>
+{% endif %}
+
+{% if vn_aktive_len != 0 and ob_aktive_len != 0 %}
+
+<div class="cardtext">
+<h1 class="text-dark">Бухгалтерский баланс</h1>
+</div>
+<br>
+    <div class="cardtab">
+        <h3 class="text-dark">Внеоборотные активы</h3>
+        <div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Нематериальные активы</th>
+              <th scope="col">Результаты исследований и разработок</th>
+              <th scope="col">Нематериальные поисковые активы</th>
+                 <th scope="col">Материальные поисковые активы</th>
+                <th scope="col">Основные средства</th>
+                <th scope="col">Доходные вложения в материальные ценности</th>
+                 <th scope="col">Финансовые вложения</th>
+                 <th scope="col">Отложенные налоговые активы</th>
+                 <th scope="col">Прочие внеоборотные активы</th>
+                 <th scope="col">Авансы на капитальное строительство</th>
+                 <th scope="col">Незавершенное строительство</th>
+                <th scope="col">Итог</th>
+                 <th scope="col">Изменение</th>
+                <th scope="col">Удаление</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(vn_aktive_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ vn_aktive[el][3] }} </td>
+                <td> {{ vn_aktive[el][1] }} </td>
+              <td> {{ vn_aktive[el][4] }} </td>
+              <td>{{ vn_aktive[el][5] }}</td>
+              <td>{{ vn_aktive[el][6] }}</td>
+                <td>{{ vn_aktive[el][7] }}</td>
+                 <td>{{ vn_aktive[el][8] }}</td>
+                <td>{{ vn_aktive[el][9] }}</td>
+              <td> {{ vn_aktive[el][10] }} </td>
+              <td>{{ vn_aktive[el][11] }}</td>
+              <td>{{ vn_aktive[el][12] }}</td>
+                <td>{{ vn_aktive[el][13] }}</td>
+                 <td>{{ vn_aktive[el][14] }}</td>
+                <td>{{ balans_aktiv[el][3] }}</td>
+                <td> <a href="/izmb/0/{{vn_aktive[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Изменить</a></td>
+                <td> <a href="/ydal/0/{{vn_aktive[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Удалить</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+</div>
+    </div>
+<hr />
+
+<div class="cardtab">
+    <h3 class="text-dark">Оборотные активы</h3>
+    <div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Запасы</th>
+              <th scope="col">Налог на добавленную стоимость по приобретенным ценностям</th>
+              <th scope="col">Дебиторская задолженность</th>
+                 <th scope="col">Финансовые вложения (за исключением денежных эквивалентов)</th>
+                 <th scope="col">Денежные средства и денежные эквиваленты</th>
+                 <th scope="col">Прочие оборотные активы</th>
+                <th scope="col">Итог</th>
+                <th scope="col">Изменение</th>
+                <th scope="col">Удаление</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(ob_aktive_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ ob_aktive[el][3] }} </td>
+                <td> {{ ob_aktive[el][1] }} </td>
+              <td> {{ ob_aktive[el][4] }} </td>
+              <td>{{ ob_aktive[el][5] }}</td>
+              <td>{{ ob_aktive[el][6] }}</td>
+                <td>{{ ob_aktive[el][7] }}</td>
+                 <td>{{ ob_aktive[el][8] }}</td>
+                <td>{{ ob_aktive[el][9] }}</td>
+              <td>{{ balans_aktiv[el][4] }}</td>
+
+                 <td> <a href="/izmb/1/{{ob_aktive[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Изменить</a></td>
+                <td> <a href="/ydal/1/{{ob_aktive[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Удалить</a></td>
+            </tr>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+</div>
+</div>
+    <hr />
+
+
+<div class="cardtab">
+    <h3 class="text-dark">Баланс</h3>
+    <div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Баланс (актив)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(ob_aktive_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ ob_aktive[el][3] }} </td>
+                <td> {{ ob_aktive[el][1] }} </td>
+              <td> {{ balans_aktiv[el][5] }} </td>
+            </tr>
+          {% endfor %}
+
+          </tbody>
+        </table>
+</div>
+   </div>
+    <hr />
+
+{% endif %}
+
+{% if kap_reserv_len != 0 and kratkosr_obzat_len != 0 and dolgosr_obzat_len != 0 %}
+
+
+<div class="cardtab">
+<h3 class="text-dark">Капитал и резервы</h3>
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Уставный капитал (складочный капитал, уставный фонд, вклады товарищей)</th>
+              <th scope="col">Собственные акции, выкупленные у акционеров</th>
+              <th scope="col">Переоценка внеоборотных активов</th>
+                 <th scope="col">Добавочный капитал (без переоценки)</th>
+                <th scope="col">Резервный капитал</th>
+                <th scope="col">Нераспределенная прибыль (непокрытый убыток)</th>
+                <th scope="col">Итог</th>
+                <th scope="col">Изменение</th>
+                <th scope="col">Удаление</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(kap_reserv_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ kap_reserv[el][3] }} </td>
+                <td> {{ kap_reserv[el][1] }} </td>
+              <td> {{ kap_reserv[el][4] }} </td>
+              <td>{{ kap_reserv[el][5] }}</td>
+              <td>{{ kap_reserv[el][6] }}</td>
+                <td>{{ kap_reserv[el][7] }}</td>
+                 <td>{{ kap_reserv[el][8] }}</td>
+                <td>{{ kap_reserv[el][9] }}</td>
+                <td>{{ balans_passiv[el][4] }}</td>
+                <td> <a href="/izmb/2/{{kap_reserv[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Изменить</a></td>
+                <td> <a href="/ydal/2/{{kap_reserv[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Удалить</a></td>
+            </tr>
+          {% endfor %}
+
+          </tbody>
+        </table>
+</div>
+<!--<h3 class="text-light text-right">Итог: </h3>-->
+</div>
+    <hr />
+
+
+
+<div class="cardtab">
+<h3 class="text-dark">Долгосрочные обязательства</h3>
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Заемные средства</th>
+              <th scope="col">Отложенные налоговые обязательства</th>
+              <th scope="col">Оценочные обязательства</th>
+                 <th scope="col">Прочие обязательства</th>
+                <th scope="col">Итог</th>
+                <th scope="col">Изменение</th>
+                <th scope="col">Удаление</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(dolgosr_obzat_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ dolgosr_obzat[el][3] }} </td>
+                <td> {{ dolgosr_obzat[el][1] }} </td>
+              <td> {{ dolgosr_obzat[el][4] }} </td>
+              <td>{{ dolgosr_obzat[el][5] }}</td>
+              <td>{{ dolgosr_obzat[el][6] }}</td>
+                <td>{{ dolgosr_obzat[el][7] }}</td>
+                <td>{{ balans_passiv[el][6] }}</td>
+                <td> <a href="/izmb/3/{{dolgosr_obzat[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Изменить</a></td>
+                <td> <a href="/ydal/3/{{dolgosr_obzat[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Удалить</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+</div>
+<!--<h3 class="text-light text-right">Итог: </h3>-->
+</div>
+    <hr />
+
+
+
+<div class="cardtab">
+<h3 class="text-dark">Краткосрочные обязательства</h3>
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Заемные средства</th>
+              <th scope="col">Кредиторская задолженность</th>
+              <th scope="col">Доходы будущих периодов</th>
+                 <th scope="col">Оценочные обязательства</th>
+                <th scope="col">Прочие обязательства</th>
+                <th scope="col">Итог</th>
+                <th scope="col">Изменение</th>
+                <th scope="col">Удаление</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(kratkosr_obzat_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ kratkosr_obzat[el][3] }} </td>
+                <td> {{ kratkosr_obzat[el][1] }} </td>
+              <td> {{ kratkosr_obzat[el][4] }} </td>
+              <td>{{ kratkosr_obzat[el][5] }}</td>
+              <td>{{ kratkosr_obzat[el][6] }}</td>
+                <td>{{ kratkosr_obzat[el][7] }}</td>
+                 <td>{{ kratkosr_obzat[el][8] }}</td>
+                <td>{{ balans_passiv[el][5] }}</td>
+                <td> <a href="/izmb/4/{{kratkosr_obzat[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Изменить</a></td>
+                <td> <a href="/ydal/4/{{kratkosr_obzat[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Удалить</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+</div>
+<!--<h3 class="text-light text-right">Итог: </h3>-->
+</div>
+    <hr />
+
+
+<div class="cardtab">
+<h3 class="text-dark">Баланс</h3>
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Баланс (пассив)</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(kratkosr_obzat_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{  kratkosr_obzat[el][3] }} </td>
+                <td> {{  kratkosr_obzat[el][1] }} </td>
+              <td> {{ balans_passiv[el][7] }} </td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+</div>
+<!--<h3 class="text-light text-right">Итог: </h3>-->
+</div>
+    <hr />
+
+{% endif %}
+
+{% if nalog_na_prib_len!= 0 and fin_res_len != 0 %}
+
+<div class="cardtext2">
+<h1 class="text-dark">Отчет о финансовых результатах</h1>
+</div>
+<br>
+<div class="cardtab">
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">№</th>
+                 <th scope="col">Год</th>
+                 <th scope="col">ИНН</th>
+              <th scope="col">Выручка</th>
+              <th scope="col">Себестоимость продаж</th>
+              <th scope="col">Валовая прибыль (убыток)</th>
+                 <th scope="col"> Коммерческие расходы </th>
+                <th scope="col"> Управленческие расходы </th>
+                <th scope="col"> Прибыль (убыток) от продаж </th>
+                 <th scope="col"> Доходы от участия в других организациях </th>
+                 <th scope="col"> Проценты к получению </th>
+                 <th scope="col"> Проценты к уплате </th>
+                 <th scope="col"> Прочие доходы </th>
+                 <th scope="col"> Прочие расходы </th>
+                <th scope="col"> Прибыль (убыток) до налогообложения </th>
+                <th scope="col"> Налог на прибыль </th>
+                <th scope="col"> в т.ч.: текущий налог на прибыль </th>
+                <th scope="col"> отложенный налог на прибыль </th>
+                <th scope="col"> Изменение отложенных налоговых обязательств </th>
+                <th scope="col"> Изменение отложенных налоговых активов </th>
+                <th scope="col"> Прочее </th>
+                <th scope="col"> Чистая прибыль (убыток) </th>
+                <th scope="col">Изменение</th>
+                <th scope="col">Удаление</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for el in range(nalog_na_prib_len) %}
+            <tr>
+              <th scope="row">{{el + 1}}</th>
+                <td> {{ fin_res[el][3] }} </td>
+                <td> {{ fin_res[el][1] }} </td>
+              <td> {{ fin_res[el][4] }} </td>
+              <td>{{ fin_res[el][5] }}</td>
+              <td>{{ fin_res_rashch[el][3] }}</td>
+                <td>{{ fin_res[el][6] }}</td>
+                 <td>{{ fin_res[el][7] }}</td>
+                <td>{{ fin_res_rashch[el][4] }}</td>
+              <td> {{ fin_res[el][8] }} </td>
+              <td>{{ fin_res[el][9] }}</td>
+              <td>{{ fin_res[el][10] }}</td>
+                <td>{{ fin_res[el][11] }}</td>
+                 <td>{{ fin_res[el][12] }}</td>
+                <td>{{ fin_res_rashch[el][5] }}</td>
+                <td>{{ fin_res_rashch[el][6] }}</td>
+                <td>{{ nalog_na_prib[el][4] }}</td>
+                <td>{{ nalog_na_prib[el][5] }}</td>
+                <td>{{ nalog_na_prib[el][6] }}</td>
+                <td>{{ nalog_na_prib[el][7] }}</td>
+                 <td>{{ nalog_na_prib[el][8] }}</td>
+                <td>{{ fin_res_rashch[el][7] }}</td>
+                <td> <a href="/izm/5/{{fin_res[el][0]}}/{{nalog_na_prib[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Изменить</a></td>
+                <td> <a href="/ydal/5/{{fin_res[el][0]}}/{{nalog_na_prib[el][0]}}" class="btn btn-sm btn-outline-light w-90" >Удалить</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+</div>
+</div>
+<hr />
+
+{% endif %}
+<style>
+    body{
+    background: -webkit-linear-gradient(left, #FF9133, #F79DA7);
+    border-radius: 10px;
+    font-family: "Raleway", sans-serif;
+    margin: 0;
+
+}
+
+.btn-outline-light
+{
+    color: #E7003E;
+    border: 1px solid #E7003E;
+}
+
+.btn-outline-light:hover
+{
+    color: #E7003E;
+}
+
+
+.container
+{
+    overflow-x: auto; /* или scroll */
+    }
+
+
+th,
+td {
+  padding: 10px;
+}
+
+.card{
+  width: 400px;
+  border: none;
+  border-radius: 10px;
+
+  background-color: #fff;
+}
+
+.cardtab {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.cardtext
+{
+    width: 40%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.cardtext2
+{
+    width: 60%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.cardtext3
+{
+    width: 80%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.block{height:310px;background-color:#fff;padding:5px}
+
+.bar{height:310px;background-color:#fff;padding:5px}
+
+.stats{
+
+      background: #20B2AA !important;
+
+    color: #000 !important;
+}
+.articles{
+  font-size:10px;
+  color: #20B2AA;
+}
+.number1{
+  font-weight:500;
+}
+.followers{
+    font-size:10px;
+  color: #a1aab9;
+
+}
+.number2{
+  font-weight:500;
+}
+.rating{
+    font-size:10px;
+  color: #20B2AA;
+}
+.number3{
+  font-weight:500;
+}
+
+p.psl {
+    font-weight: 400;
+    font-size: 24px;
+    max-width: 900px; /* Регулировка максимальной ширины по мере необходимости */
+}
+
+@media (max-width: 1200px) {
+    h1 {
+        font-size: 30px;
+    }}
+
+@media (max-width: 992px) {
+    h1 {
+        font-size: 25px;
+    }}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 20px;
+    }}
+
+</style>
+
+
+{% endblock %}

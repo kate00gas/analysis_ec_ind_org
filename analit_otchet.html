@@ -1,0 +1,2262 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="cardtext">
+<h1 class="text-dark" xmlns="">1. Анализ финансового положения</h1>
+    </div>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('#downloadPdfButton').click(function(){
+        var inn = {{ inn | tojson | safe }};  // Преобразование массива IMUSH в JSON
+        var data_year1 = {{ data_year1 | tojson | safe }};  // Число из Flask
+        var data_year2 = {{ data_year2 | tojson | safe }};  // Массив из Flask
+
+        $.ajax({
+            url: '/generate_report22',
+            type: 'GET',
+            data: {inn: inn, data_year1: data_year1, data_year2: data_year2},
+            xhrFields: {
+                responseType: 'blob'  // important for handling the binary data
+            },
+            success: function(response) {
+                // Create a new Blob object using the
+                var blob = new Blob([response], {type: 'application/pdf'});
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = "report.pdf";
+
+                // Append link to body, click it, and remove it after triggering
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    });
+});
+</script>
+
+<!--<button id="generateReport">Сформировать отчет txt </button>-->
+<br>
+<button id="downloadPdfButton" class="btn-success">Сформировать отчет pdf</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+<hr/>
+<div class="container">
+<div class="card bg-light w-100">
+    <div class="card-body">
+<h3 class="card-title text-dark">1.1 Структура имущества и источники его формирования</h3>
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Показатель</th>
+                {% for el in range(lYEARS) %}
+                 <th scope="col" class="text-center">Значение показателя на {{YEARS[el]}} (в тыс. руб)</th>
+                {% endfor %}
+                <th scope="col" class="text-center">Значение показателя в % к валюте баланса на начало периода</th>
+                 <th scope="col" class="text-center">Значение показателя в % к валюте баланса на конец периода</th>
+                 <th scope="col" class="text-center">Изменение за анализируемый период (тыс. руб)</th>
+                <th scope="col" class="text-center">Изменение за анализируемый период (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th> {{ IMUSH[0] }}  </td>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][4] }}  </td>
+                {% endfor %}
+                <td class="text-center"> {{ PROCENT[0][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[0][1] }}  </td>
+                <td class="{{ 'positive' if IZM[0][0] >= 0 else 'negative' }} text-center"> {{ IZM[0][0] }}  </td>
+                <td class="{{ 'positive' if IZM[0][1] >= 0 else 'negative' }} text-center"> {{ IZM[0][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[1] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][5] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[1][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[1][1] }}  </td>
+                <td class="{{ 'positive' if IZM[1][0] >= 0 else 'negative' }} text-center"> {{ IZM[1][0] }}  </td>
+                <td class="{{ 'positive' if IZM[1][1] >= 0 else 'negative' }} text-center"> {{ IZM[1][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[2] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][6] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[2][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[2][1] }}  </td>
+                <td class="{{ 'positive' if IZM[2][0] >= 0 else 'negative' }} text-center"> {{ IZM[2][0] }}  </td>
+                <td class="{{ 'positive' if IZM[2][1] >= 0 else 'negative' }} text-center"> {{ IZM[2][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[3] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][7] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[3][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[3][1] }}  </td>
+                <td class="{{ 'positive' if IZM[3][0] >= 0 else 'negative' }} text-center"> {{ IZM[3][0] }}  </td>
+                <td class="{{ 'positive' if IZM[3][1] >= 0 else 'negative' }} text-center"> {{ IZM[3][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[4] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][8] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[4][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[4][1] }}  </td>
+                <td class="{{ 'positive' if IZM[4][0] >= 0 else 'negative' }} text-center"> {{ IZM[4][0] }}  </td>
+                <td class="{{ 'positive' if IZM[4][1] >= 0 else 'negative' }} text-center"> {{ IZM[4][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[5] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][9] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[5][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[5][1] }}  </td>
+                <td class="{{ 'positive' if IZM[5][0] >= 0 else 'negative' }} text-center"> {{ IZM[5][0] }}  </td>
+                <td class="{{ 'positive' if IZM[5][1] >= 0 else 'negative' }} text-center"> {{ IZM[5][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[6] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ aktiv[el][10] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[6][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[6][1] }}  </td>
+                <td class="{{ 'positive' if IZM[6][0] >= 0 else 'negative' }} text-center"> {{ IZM[6][0] }}  </td>
+                <td class="{{ 'positive' if IZM[6][1] >= 0 else 'negative' }} text-center"> {{ IZM[6][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[7] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ passiv[el][6] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[7][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[7][1] }}  </td>
+                <td class="{{ 'positive' if IZM[7][0] >= 0 else 'negative' }} text-center"> {{ IZM[7][0] }}  </td>
+                <td class="{{ 'positive' if IZM[7][1] >= 0 else 'negative' }} text-center"> {{ IZM[7][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[8] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ passiv[el][7] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[8][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[8][1] }}  </td>
+                <td class="{{ 'positive' if IZM[8][0] >= 0 else 'negative' }} text-center"> {{ IZM[8][0] }}  </td>
+                <td class="{{ 'positive' if IZM[8][1] >= 0 else 'negative' }} text-center"> {{ IZM[8][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[9] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ passiv[el][8] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[9][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[9][1] }}  </td>
+                <td class="{{ 'positive' if IZM[9][0] >= 0 else 'negative' }} text-center"> {{ IZM[9][0] }}  </td>
+                <td class="{{ 'positive' if IZM[9][1] >= 0 else 'negative' }} text-center"> {{ IZM[9][1] }}  </td>
+            </tr>
+          <tr>
+              <th> {{ IMUSH[10] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ passiv[el][9] }}  </td>
+                {% endfor %}
+              <td class="text-center"> {{ PROCENT[10][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[10][1] }}  </td>
+                <td class="{{ 'positive' if IZM[10][0] >= 0 else 'negative' }} text-center"> {{ IZM[10][0] }}  </td>
+                <td class="{{ 'positive' if IZM[10][1] >= 0 else 'negative' }} text-center"> {{ IZM[10][1] }}  </td>
+             </tr>
+            <tr>
+              <th> {{ IMUSH[11] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ passiv[el][10] }}  </td>
+                {% endfor %}
+                <td class="text-center"> {{ PROCENT[11][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[11][1] }}  </td>
+                <td class="{{ 'positive' if IZM[11][0] >= 0 else 'negative' }} text-center"> {{ IZM[11][0] }}  </td>
+                <td class="{{ 'positive' if IZM[11][1] >= 0 else 'negative' }} text-center"> {{ IZM[11][1] }}  </td>
+              </tr>
+            <tr>
+              <th> {{ IMUSH[12] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ passiv[el][11] }}  </td>
+                {% endfor %}
+                <td class="text-center"> {{ PROCENT[12][0] }}  </td>
+                <td class="text-center"> {{ PROCENT[12][1] }}  </td>
+                <td class="{{ 'positive' if IZM[12][0] >= 0 else 'negative' }} text-center"> {{ IZM[12][0] }}  </td>
+                <td class="{{ 'positive' if IZM[12][1] >= 0 else 'negative' }} text-center"> {{ IZM[12][1] }}  </td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<hr />
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="dataChart"></canvas>
+            </div>
+           <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="card border rounded">
+                    <div class="card-body">
+                        <h5 class="card-title">Структура активов организации за {{ data_year2 }}</h5>
+                        <p class="card-text">
+                            Структура активов организации на последний день анализируемого периода
+                            {{ data_year2 }} характеризуется соотношением: {{PROCENT[0][1]}}% внеоборотных активов и
+                            {{PROCENT[3][1]}}% текущих. Активы организации за анализируемый период
+                            {% if IZM[12][0] > 0 %}
+                            увеличились
+                            {% else %}
+                            уменьшились
+                            {% endif %}
+                            на {{ IZM[12][0] }} (на {{ IZM[12][1] }}%).
+                        </p>
+                        <p>
+                            {% if IZM[0][1] > 0 and IZM[3][1] > 0 %}
+                            Имеет место рост внеоборотных и оборотных активов, что положительно характеризует динамику
+                            изменения имущественного положения организации.
+                            {% else %}
+                            Отсутствует рост внеоборотных и оборотных активов.
+                            {% endif %}
+                        </p>
+                        <p>
+                            {% if IZM[7][1] > 0 %}
+                            Имеет место увеличение собственного капитала, что положительно характеризует динамику
+                            изменения имущественного положения организации.
+                            {% else %}
+                            Собственный капитал уменьшился.
+                            {% endif %}
+                        </p>
+                        <p>
+                            {% if IZM[8][1] > 0 and IZM[10][1] > 0%}
+                            Имеет место снижение долгосрочных и краткосрочных обязательств, что положительно характеризует динамику
+                            изменения имущественного положения организации.
+                            {% else %}
+                            Долгосрочные и краткосрочные обязательства увеличились.
+                            {% endif %}
+                        </p>
+                        <p>
+                            {% if IZM[12][1] > 0 %}
+                            Имеет место укрепление валюты баланса, что положительно характеризует динамику
+                            изменения имущественного положения организации.
+                            {% else %}
+                            Валюта баланса уменьшилась.
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            {% if IZM[9][1] > IZM[7][1] and ZaySob >= 2 %}
+                            Присутствует более быстрый рост заемных средств по сравнению с собственными
+                            средствами, что увеличивает вероятность потери контроля над своими активами.
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            {% if IZM[10][1] > IZM[8][1] and KratDolg >= 2 %}
+                            Более быстрый рост краткосрочных обязательств по сравнению с долгосрочными
+                            обязательствами, что приводит к снижению финансовой стабильности организации.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script>
+    var ctx = document.getElementById('dataChart').getContext('2d');
+    var dataChart = new Chart(ctx, {
+        type: 'pie',
+       data: {
+            labels: ['Внеоборотные активы', 'Прочие оборотные активы', 'Запасы', 'Дебиторская задолженность'],
+            datasets: [{
+                label: '%',
+                data: {{ data | tojson }},
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)'
+                ],
+                borderColor: ['rgba(255, 255, 255, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            aspectRatio: 1,
+            legend: {
+                position: 'bottom'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    });
+</script>
+
+
+
+<hr />
+
+<h3 class="text-dark card-title">1.2 Оценка стоимости чистых активов организации</h3>
+<div class="container">
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Показатель</th>
+                {% for el in range(lYEARS) %}
+                 <th scope="col" class="text-center">Значение показателя на {{YEARS[el]}} (в тыс. руб)</th>
+                {% endfor %}
+                <th scope="col" class="text-center">Значение показателя в % к валюте баланса на начало периода</th>
+                 <th scope="col" class="text-center">Значение показателя в % к валюте баланса на конец периода</th>
+                 <th scope="col" class="text-center">Изменение за анализирцемый период (тыс. руб)</th>
+                <th scope="col" class="text-center">Изменение за анализирцемый период (%)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th> {{ STOIMCHIST[0] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if CHIST[0][el] > CHIST[1][el] else 'negative' }} text-center"> {{ CHIST[0][el] }}  </td>
+                {% endfor %}
+                <td class="text-center"> {{ CHIST[0][lYEARS] }}  </td>
+                <td class="text-center"> {{ CHIST[0][lYEARS+1] }}  </td>
+                <td class="{{ 'positive' if CHIST[0][lYEARS+2] > 0 else 'negative' }} text-center"> {{ CHIST[0][lYEARS+2] }}  </td>
+                <td class="{{ 'positive' if CHIST[0][lYEARS+3] > 0 else 'negative' }} text-center"> {{ CHIST[0][lYEARS+3] }}  </td>
+            </tr>
+            <tr>
+              <th> {{ STOIMCHIST[1] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ CHIST[1][el] }}  </td>
+                {% endfor %}
+                <td class="text-center"> {{ CHIST[1][lYEARS] }}  </td>
+                <td class="text-center"> {{ CHIST[1][lYEARS+1] }}  </td>
+                <td class="{{ 'positive' if CHIST[1][lYEARS+2] > 0 else 'negative' }} text-center"> {{ CHIST[1][lYEARS+2] }}  </td>
+                <td class="{{ 'positive' if CHIST[1][lYEARS+3] > 0 else 'negative' }} text-center"> {{ CHIST[1][lYEARS+3] }}  </td>
+            </tr>
+            <tr>
+              <th> {{ STOIMCHIST[2] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if CHIST[2][el] > 0 else 'negative' }} text-center"> {{ CHIST[2][el] }}  </td>
+                {% endfor %}
+                <td class="text-center"> {{ CHIST[2][lYEARS] }}  </td>
+                <td class="text-center"> {{ CHIST[2][lYEARS+1] }}  </td>
+                <td class="{{ 'positive' if CHIST[2][lYEARS+2] > 0 else 'negative' }} text-center"> {{ CHIST[2][lYEARS+2] }}  </td>
+                <td class="{{ 'positive' if CHIST[2][lYEARS+3] > 0 else 'negative' }} text-center"> {{ CHIST[2][lYEARS+3] }}  </td>
+            </tr>
+          </tbody>
+        </table>
+
+</div>
+
+
+
+
+        <hr />
+    {% if CHIST[2][lYEARS-1] > 0 %}
+        <p> - Чистые активы превосходят уставной капитал, что характеризует положительное влияние на финансы компании. </p>
+    {% if CHIST[0][lYEARS+2] > 0 %}
+    <p> - Чистые активы на конец периода превосходят чистые активы на начало периода, что характеризует положительное влияние
+        на финансы компании. </p>
+    {% else %}
+    <p> - Компания понесла убытки или сократила свои активы. Это может быть признаком финансовых трудностей или неэффективности
+управлением ресурсами.
+Для улучшения финансовой устойчивости нужно улучшить операционную деятельность, привлечь дополнительный капитала или
+        заняться реструктуризацией долга. </p>
+    {% endif %}
+ {% else %}
+<p> - Имеются потенциальные проблемы в финансовой устойчивости организации. Компания имеет недостаточно активов
+    для покрытия своих обязательств. </p>
+   {% endif %}
+
+          <script>
+        // Данные из Flask передаются в контекст шаблона
+        const YEARS = {{ YEARS | tojson | safe }};
+        const CHIST = {{ CHIST | tojson | safe }};
+
+        // Преобразование данных для Chart.js
+        const data = {
+            labels: YEARS,
+            datasets: [
+                {
+                    label: 'Чистые активы',
+                    data: CHIST[0],
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Собственный капитал',
+                    data: CHIST[1],
+                    backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Значение в рублях'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Годы'
+                        }
+                    }
+                },
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Динамика чистых активов и уставного капитала'
+                    }
+                }
+            },
+        };
+
+        window.onload = function() {
+            const context = document.getElementById('myChart1').getContext('2d');
+            new Chart(context, config);
+        };
+    </script>
+            <div class="container mt-5">
+        <canvas id="myChart1" width="400" height="200"></canvas>
+    </div>
+<hr />
+
+
+
+<h3 class="text-dark card-title">1.3 Анализ финансовой устойчивости</h3>
+        <h4 class="text-dark"> 1.3.1. Основные показатели финансовой устойчивости организации</h4>
+<div class="container">
+
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Показатель</th>
+                {% for el in range(lYEARS) %}
+                 <th  scope="col" class="text-center">Значение показателя на {{YEARS[el]}}</th>
+                {% endfor %}
+                <th scope="col" class="text-center">Изменение показателя</th>
+                 <th scope="col" class="text-center">Описание показателя и его нормативное значение</th>
+            </tr>
+          </thead>
+      <tbody>
+            <tr>
+                <th> {{ FINUST[0] }}  </th>
+                    {% for el in range(lYEARS) %}
+                    <td class="{{ 'positive' if FIN[0][el] >= 0.55 else 'negative' }} text-center"> {{ FIN[0][el] }}  </td>
+                    {% endfor %}
+                    <td class="{{ 'positive' if FIN[0][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[0][lYEARS] }}  </td>
+                    <th> {{ FIN[0][lYEARS + 1] }}  </th>
+                </tr>
+            <tr>
+              <th> {{ FINUST[1] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if FIN[1][el] >= 0.43 and FIN[1][el] <= 0.82 else 'negative' }} text-center"> {{ FIN[1][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[1][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[1][lYEARS] }}  </td>
+                <th> {{ FIN[1][lYEARS+1] }}  </th>
+            </tr>
+            <tr>
+              <th> {{ FINUST[2] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if FIN[2][el] >= 0.1 else 'negative' }} text-center"> {{ FIN[2][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[2][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[2][lYEARS] }}  </td>
+                <th> {{ FIN[2][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[3] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ FIN[3][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[3][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[3][lYEARS] }}  </td>
+                <th> {{ FIN[3][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[4] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if FIN[4][el] >= 0.7 else 'negative' }} text-center"> {{ FIN[4][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[4][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[4][lYEARS] }}  </td>
+                <th> {{ FIN[4][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[5] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if FIN[5][el] >= 0.2 else 'negative' }} text-center"> {{ FIN[5][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[5][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[5][lYEARS] }}  </td>
+                <th> {{ FIN[5][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[6] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ FIN[6][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[6][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[6][lYEARS] }}  </td>
+                <th> {{ FIN[6][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[7] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ FIN[7][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[7][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[7][lYEARS] }}  </td>
+                <th> {{ FIN[7][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[8] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if FIN[8][el] >= 0.5 else 'negative' }} text-center"> {{ FIN[8][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[8][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[8][lYEARS] }}  </td>
+                <th> {{ FIN[8][lYEARS+1] }}  </th>
+            </tr>
+      <tr>
+              <th> {{ FINUST[9] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="text-center"> {{ FIN[9][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if FIN[9][lYEARS] >= 0 else 'negative' }} text-center"> {{ FIN[9][lYEARS] }}  </td>
+                <th> {{ FIN[9][lYEARS+1] }}  </th>
+            </tr>
+          </tbody>
+ </table>
+</div>
+                <hr />
+    <h5> 1. Коэффициент автономности </h5>
+    {% if FIN[0][lYEARS-1] >= 0.5 %}
+        <p>
+            - Коэффициент автономии организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[0][lYEARS-1]}} </p>
+        <p>- Организация в значительной степени финансируется за счёт собственных средств.</p>
+        <p>-- Организация обладает высокой финансовой стабильностью и независимостью от кредиторов. Это снижает финансовые риски,
+            связанные с обязательствами перед внешними займодателями и повышает доверие инвесторов и партнёров. </p>
+    {% endif %}
+        {% if FIN[0][lYEARS-1] >= 0.3 and FIN[0][lYEARS-1] < 0.5 %}
+    <p>- Коэффициент автономии организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[0][lYEARS-1]}}</p>
+        <p>- В организации присутсвует сбалансированное соотношение между собственными средствами и заёмными средствами.</p>
+       <p> - Организация сохраняет достаточный уровень автономии при этом используя возможности заёмного финансирования для расширения операций и инвестиций.</p>
+        {% endif %}
+        {% if FIN[0][lYEARS-1] < 0.3 %}
+    <p>- Коэффициент автономии организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[0][lYEARS-1]}}</p>
+        <p>- Преобладание заёмных средств над собственными в структуре капитала.</p>
+        <p>- Высокая зависимость от внешних источников финансирования, что увеличивает финансовый риск и может привести к проблемам с
+        ликвидностью и платёжеспособностью в случае ухудшения условий кредитования или увеличения процентных ставок.</p>
+        {% endif %}
+
+    <h5> 2. Коэффициент финансового левериджа </h5>
+        {% if FIN[1][lYEARS-1] <= 0.98 %}
+            <p>- Коэффициент финансового левериджа организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[1][lYEARS-1]}} </p>
+            <p>- Организация использует меньше заёмных средств по сравнению с собственным капиталом.</p>
+            <p>- Это может указывать на консервативную финансовую стратегию с меньшим риском финансового стресса в случае экономических проблем.</p>
+            <p>- Компания может иметь ограниченные возможности для роста через реинвестирование, поскольку она меньше полагается на внешнее финансирование.</p>
+        {% endif %}
+        {% if FIN[1][lYEARS-1] >= 1.1 %}
+             <p>- Коэффициент финансового левериджа организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[1][lYEARS-1]}} </p>
+            <p>- Компания больше полагается на заёмные средства, нежели на собственный капитал.</p>
+            <p>- Это может указывать на агрессивную стратегию финансирования для стимулирования роста и расширения,
+                но с более высокими рисками в случае финансовой нестабильности.</p>
+            <p>- Компания с высоким коэффициентом левериджа может иметь более высокие затраты на обслуживание долга,
+                что потенциально может ограничить способность адаптироваться к изменениям в экономической среде.
+            </p>
+        {% endif %}
+        {% if FIN[1][lYEARS-1] < 1.1 and FIN[1][lYEARS-1] > 0.98 %}
+             <p>- Коэффициент финансового левериджа организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[1][lYEARS-1]}} </p>
+            <p>- Соотношение долга и собственного капитала примерно равное, что может указывать на сбалансированное финансовое положение.</p>
+            <p>- Это может быть свидетельством умеренной финансовой стратегии, когда компания стремится оптимально использовать как заёмные, так и собственные средства для финансирования своей деятельности.</p>
+        {% endif %}
+
+    <h5> 3. Коэффициент обеспеченности собственными оборотными средствами </h5>
+    {% if FIN[2][lYEARS-1] >= 0.1 %}
+             <p>- Коэффициент обеспеченности собственными оборотными средствами организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[2][lYEARS-1]}} </p>
+            <p>- Значение указывает на то, что 10% или более оборотных активов финансируются за счет собственных средств.
+                Это считается положительным показателем, показывающим, что организация обладает достаточной финансовой независимостью и устойчивостью.
+                Компания имеет достаточный внутренний резерв для покрытия своих оборотных активов, что снижает зависимость от внешних заемных средств и
+                краткосрочных обязательств.
+                Это также может указывать на более низкий финансовый риск и большую способность справляться с экономическими нестабильностями.</p>
+        {% endif %}
+    {% if FIN[2][lYEARS-1] < 0.1 %}
+             <p>- Коэффициент обеспеченности собственными оборотными средствами организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[2][lYEARS-1]}} </p>
+            <p>- Значение коэффициента ниже 0,1 означает, что менее 10% оборотных активов финансируются за счет
+                собственных средств.
+                Это может свидетельствовать о потенциальной финансовой уязвимости компании, поскольку большая часть
+                оборотных активов зависит от
+                краткосрочных заемных средств. Такое положение может увеличивать финансовые риски, особенно в условиях
+                экономической нестабильности или
+                при внезапном ухудшении рыночных условий, что может привести к сложностям с ликвидностью и
+                платежеспособностью.</p>
+        {% endif %}
+
+        <h5> 4. Индекс постоянного актива </h5>
+    {% if FIN[3][lYEARS-1] < 1 %}
+             <p>- Индекс постоянного актива организации на последний день анализируемого периода ({{YEARS[lYEARS-1]}})
+                 составил {{FIN[3][lYEARS-1]}} </p>
+            <p>- Это означает, что собственный капитал компании превышает стоимость внеоборотных активов.
+                Это может указывать на более высокую финансовую гибкость, поскольку не всё имущество
+                компании "заморожено" в долгосрочных активах. Компании с меньшим значением индекса могут быстрее
+                адаптироваться к изменениям на рынке.</p>
+        <p>- Вывод о показателе: Большая финансовая гибкость и возможность адаптации. Подходит для компаний,
+            предпочитающих минимизировать риски связанные с долгосрочными активами.</p>
+        {% endif %}
+    {% if FIN[3][lYEARS-1] >= 1 and FIN[3][lYEARS-1] < 2 %}
+             <p>- Коэффициент обеспеченности собственными оборотными средствами организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[3][lYEARS-1]}} </p>
+            <p>- Это показывает, что значительная часть собственного капитала инвестирована в долгосрочные активы,
+                такие как оборудование, недвижимость и т.п. Это может свидетельствовать о долгосрочной стратегии
+                развития компании, но также накладывает определенные риски, связанные с ликвидностью и зависимостью
+                от этих активов. </p>
+            <p>- Вывод о показателе: Здоровая балансировка между долгосрочными инвестициями и доступным собственным
+                капиталом, что отражает стабильную бизнес-модель.</p>
+        {% endif %}
+    {% if FIN[3][lYEARS-1] >= 2 %}
+             <p>- Коэффициент обеспеченности собственными оборотными средствами организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[3][lYEARS-1]}} </p>
+            <p>- Это может указывать на возможное переинвестирование в долгосрочные активы или недостаток собственных
+                оборотных средств. Такое положение требует дополнительного анализа, так как высокая степень
+                зависимости от внеоборотных активов может увеличить риск в условиях экономической нестабильности.</p>
+            <p>- Вывод о показателе: Высокая степень инвестиций в долгосрочные активы, необходимость внимательного
+                мониторинга ликвидности и зависимости от внеоборотных активов. Рекомендуется рассмотрение стратегий по
+                оптимизации баланса между долгосрочными активами и ликвидностью.</p>
+        {% endif %}
+<hr />
+    <h5> 5. Коэффициент покрытия инвестиций </h5>
+    {% if FIN[4][lYEARS-1] > 0.7 %}
+             <p>- Коэффициент покрытия инвестиций организации на последний день анализируемого
+                 периода ({{YEARS[lYEARS-1]}}) составил {{FIN[4][lYEARS-1]}} </p>
+            <p>- Это означает, что большая часть активов компании финансируется за счёт собственных средств и
+                долгосрочных обязательств, что указывает на финансовую устойчивость и независимость от
+                краткосрочных кредитных обязательств. Компания потенциально более устойчива к финансовому давлению
+                в случае экономических нестабильностей.</p>
+        {% endif %}
+    {% if FIN[4][lYEARS-1] > 0.4 and FIN[4][lYEARS-1] <= 0.7 %}
+             <p>- Коэффициент покрытия инвестиций организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[4][lYEARS-1]}} </p>
+            <p>- Значение указывает на сбалансированное соотношение между собственными средствами, долгосрочными
+                и краткосрочными обязательствами. Такие компании обладают умеренной степенью риск для кредиторов и
+                инвесторов, однако следует обратить внимание на структуру и сроки долгов.</p>
+        {% endif %}
+        {% if FIN[4][lYEARS-1] < 0.1 %}
+             <p>- Коэффициент покрытия инвестиций организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[4][lYEARS-1]}} </p>
+            <p>- Сигнализирует, что значительная часть активов компании финансируется за счет краткосрочных
+                обязательств. Это может означать высокий финансовый риск и зависимость от внешних финансовых
+                источников, что делает компанию уязвимой для изменений в кредитных ставках или условиях
+                кредитования.</p>
+        {% endif %}
+
+        <h5> 6. Коэффициент маневренности собственного капитала </h5>
+    {% if FIN[5][lYEARS-1] > 0.5 %}
+             <p>- Коэффициент маневренности собственного капитала организации на последний день анализируемого
+                 периода ({{YEARS[lYEARS-1]}}) составил {{FIN[5][lYEARS-1]}} </p>
+            <p>- Означает, что значительная часть собственных средств компании используется для финансирования
+                текущих операций. Это может свидетельствовать о высокой ликвидности и финансовой устойчивости,
+                а также о способности компании быстро реагировать на изменения рыночных условий.</p>
+        {% endif %}
+    {% if FIN[5][lYEARS-1] > 0.3 and FIN[5][lYEARS-1] <= 0.5 %}
+             <p>- Коэффициент маневренности собственного капитала организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[5][lYEARS-1]}} </p>
+            <p>- Указывает на сбалансированное использование собственных средств для финансирования как текущей
+                деятельности, так и долгосрочных инвестиций. Такая структура капитала может быть приемлемой,
+                но компании необходимо тщательно управлять своими активами для избежания финансовых проблем.</p>
+        {% endif %}
+        {% if FIN[5][lYEARS-1] <= 0.3 %}
+             <p>- Коэффициент маневренности собственного капитала организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[5][lYEARS-1]}} </p>
+            <p>- Показывает, что лишь малая часть собственных средств направляется на финансирование текущей
+                деятельности, что может указывать на консервативную стратегию финансирования или на наличие
+                значительных долгосрочных инвестиций. Возможно, компании потребуется дополнительное привлечение
+                краткосрочных средств для поддержания операционной деятельности.</p>
+        {% endif %}
+     <h5> 7. Коэффициент мобильности имущества </h5>
+    {% if FIN[6][lYEARS-1] > 0.5 %}
+             <p>- Коэффициент мобильности имущества организации на последний день анализируемого
+                 периода ({{YEARS[lYEARS-1]}}) составил {{FIN[6][lYEARS-1]}} </p>
+            <p>- Это означает, что большая часть активов компании состоит из оборотных средств, что
+                указывает на высокий уровень ликвидности. Компании с высокими оборотными активами обычно
+                легче адаптироваться к изменениям рынка и оперативно реагировать на финансовые потребности,
+                так как имеется доступ к ликвидным ресурсам, которые могут быть быстро мобилизованы для покрытия
+                текущих расходов или инвестиционных возможностей. Однако стоит учитывать, что излишек в оборотных
+                средствах может свидетельствовать о неэффективном использовании капитала.</p>
+        {% endif %}
+    {% if FIN[6][lYEARS-1] > 0.2 and FIN[6][lYEARS-1] <= 0.5 %}
+             <p>- Коэффициент мобильности имущества организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[6][lYEARS-1]}} </p>
+            <p>- Указывает на умеренный уровень ликвидности и баланс между оборотными и необоротными активами.
+                Такое соотношение может говорить о том, что компания делает акцент на сбалансированной структуре
+                активов, обеспечивая стабильное обслуживание текущих и долгосрочных потребностей.</p>
+        {% endif %}
+        {% if FIN[6][lYEARS-1] <= 0.2 %}
+             <p>- Коэффициент мобильности имущества организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[6][lYEARS-1]}} </p>
+            <p>- Показывает, что большая часть активов компании состоит из необоротных средств. Это может
+                указывать на значительные инвестиции в основные средства или другие неликвидные активы, что может
+                сделать компанию менее гибкой в ответ на краткосрочные финансовые потребности. Хотя это может
+                быть приемлемо для компаний в определенных отраслях (например, в производственной), в целом низкая
+                доля оборотных средств может увеличить финансовый риск, особенно в условиях экономической
+                нестабильности.</p>
+        {% endif %}
+
+         <h5> 8. Коэффициент мобильности оборотных средств </h5>
+    {% if FIN[7][lYEARS-1] > 0.5 %}
+             <p>- Коэффициент мобильности оборотных средств организации на последний день анализируемого
+                 периода ({{YEARS[lYEARS-1]}}) составил {{FIN[7][lYEARS-1]}} </p>
+            <p>- Это указывает на то, что компания располагает большим объемом ликвидных средств по отношению
+                к общему объему оборотных активов. Это может быть показателем хорошей финансовой устойчивости,
+                так как компания может быстро реагировать на финансовые потребности и возможности без необходимости
+                привлекать дополнительные ресурсы или заемные средства. Однако это также может указывать на излишне
+                консервативное управление активами, при котором возможности для высокодоходных инвестиций
+                могут теряться.</p>
+        {% endif %}
+    {% if FIN[7][lYEARS-1] > 0.2 and FIN[7][lYEARS-1] <= 0.5 %}
+             <p>- Коэффициент мобильности оборотных средств организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[7][lYEARS-1]}} </p>
+            <p>- Означает умеренную долю ликвидных средств в структуре оборотных активов. Это может
+                свидетельствовать о сбалансированной политике управления ликвидностью и инвестирования.
+                Компания способна поддерживать повседневную финансовую деятельность, при этом вкладывая средства
+                в бизнес-развитие и иные менее ликвидные активы.</p>
+        {% endif %}
+        {% if FIN[7][lYEARS-1] <= 0.2 %}
+             <p>- Коэффициент мобильности оборотных средств организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[7][lYEARS-1]}} </p>
+            <p>- Показывает, что доля ликвидных активов в общем объеме оборотных средств низка. Это может
+                сигнализировать о потенциальных проблемах с ликвидностью, особенно если компании потребуется
+                быстро покрывать краткосрочные обязательства или срочно реализовать инвестиционные возможности.
+                Такое положение требует дополнительного внимания к управлению кассовыми потоками и возможно,
+                пересмотру инвестиционной политики.</p>
+        {% endif %}
+
+             <h5> 9. Коэффициент обеспеченности запасов </h5>
+    {% if FIN[8][lYEARS-1] >= 1 %}
+             <p>- Коэффициент обеспеченности запасов организации на последний день анализируемого
+                 периода ({{YEARS[lYEARS-1]}}) составил {{FIN[8][lYEARS-1]}} </p>
+            <p>- Это означает, что собственных оборотных средств достаточно или они превышают стоимость запасов.
+                Это говорит о высокой финансовой устойчивости и независимости компании от внешних заимствований
+                для финансирования текущих операций, связанных со складскими запасами. Компания в состоянии оперативно
+                покрывать стоимость своих запасов без дополнительного привлечения кредитных средств, что снижает
+                финансовые риски.</p>
+        {% endif %}
+    {% if FIN[8][lYEARS-1] >= 0.7 and FIN[8][lYEARS-1] <= 0.9 %}
+             <p>- Коэффициент обеспеченности запасов организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[8][lYEARS-1]}} </p>
+            <p>- Показывает, что компания в основном справляется с финансированием своих запасов собственными
+                оборотными средствами, но может оказаться в ситуации, где часть запасов придется финансировать за
+                счет кредитов или других внешних источников. Это может указывать на необходимость улучшения управления
+                оборотными активами или оптимизации объемов запасов.</p>
+        {% endif %}
+        {% if FIN[8][lYEARS-1] < 0.7 %}
+             <p>- Коэффициент обеспеченности запасов организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[8][lYEARS-1]}} </p>
+            <p>- Указывает на то, что значительная часть запасов финансируется за счет заемных средств или других
+                внешних источников. Это может создавать дополнительную финансовую нагрузку на компанию из-за
+                необходимости платить проценты, а также увеличивает риск ликвидности и зависимость от внешних
+                финансовых условий. Компаниям с низким коэффициентом обеспеченности запасов требуется тщательный
+                анализ управления запасами и возможно, пересмотр финансовой стратегии для уменьшения зависимости от
+                заимствований.</p>
+        {% endif %}
+
+                 <h5> 10. Коэффициент краткосрочной задолженности </h5>
+    {% if FIN[9][lYEARS-1] > 0.5 %}
+             <p>- Коэффициент обеспеченности запасов организации на последний день анализируемого
+                 периода ({{YEARS[lYEARS-1]}}) составил {{FIN[9][lYEARS-1]}} </p>
+            <p>- Высокое значение этого коэффициента указывает на то, что большая часть общей задолженности
+                компании состоит из краткосрочных обязательств. Это может сигнализировать о потенциальных проблемах
+                с ликвидностью, так как компании требуется осуществлять погашения значительных сумм в краткосрочной
+                перспективе. Компаниям с высоким коэффициентом краткосрочной задолженности может быть сложно привлечь
+                новые финансирования, поскольку кредиторы могут воспринимать их как более рискованные.</p>
+        {% endif %}
+    {% if FIN[9][lYEARS-1] >= 0.3 and FIN[9][lYEARS-1] <= 0.5 %}
+             <p>- Коэффициент обеспеченности запасов организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[9][lYEARS-1]}} </p>
+            <p>- Это уровень показывает баланс между краткосрочными и долгосрочными обязательствами.
+                Компания в большей степени сбалансирована в финансовом плане, что позволяет ей управлять своими
+                долгами без чрезмерного давления на свою ликвидность.</p>
+        {% endif %}
+        {% if FIN[9][lYEARS-1] < 0.3 %}
+             <p>- Коэффициент обеспеченности запасов организации на последний день
+                 анализируемого периода ({{YEARS[lYEARS-1]}}) составил {{FIN[9][lYEARS-1]}} </p>
+            <p>- Низкое значение этого коэффициента указывает на то, что большая часть обязательств компании
+                является долгосрочной. Это может быть положительным сигналом, поскольку показывает, что компания
+                не подвергается значительному давлению для немедленного погашения своих долгов, и у неё есть время
+                для генерации достаточных доходов для обслуживания своих долгов. Однако это также может означать,
+                что компания может иметь проблемы с получением краткосрочного финансирования в случае необходимости,
+                так как большинство её ресурсов привязаны к долгосрочным обязательствам.</p>
+        {% endif %}
+
+
+<div class="container mt-5">
+        <h2 class="mb-4">Динамика показателей</h2>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+
+        const YEARS = {{ YEARS | tojson | safe }};
+        const FIN = {{ FIN | tojson | safe }};
+
+            const data = {
+                labels: YEARS,
+                datasets: [
+                    {
+                        label: 'Коэффициент автономии',
+                        data: FIN[0],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Коэффицинт покрытия инвестиций',
+                        data: FIN[4],
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Коэффициент краткосрочной задолженности',
+                        data: FIN[9],
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderWidth: 1
+                    }
+                ]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Динамика показателей'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Года'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Значение показателя'
+                            }
+                        }
+                    }
+                }
+            };
+
+            const myChart = new Chart(
+                document.getElementById('myChart'),
+                config
+            );
+        });
+    </script>
+
+
+<hr/>
+
+     <h4 class="text-dark"> 1.3.2. Анализ финансовой устойчивости по величине излишка (недостатка) собственных оборотных средств</h4>
+<div class="container">
+
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Показатель собственных оборотных средств (СОС)</th>
+                 <th scope="col" class="text-center">Значение показателя на начало периода {{YEARS[0]}}</th>
+                <th scope="col" class="text-center">Значение показателя на конец периода {{YEARS[lYEARS-1]}}</th>
+                {% for el in range(lYEARS) %}
+                 <th scope="col" class="text-center">Излишек (недостаток) на {{YEARS[el]}}</th>
+                {% endfor %}
+            </tr>
+          </thead>
+     <tbody>
+            <tr>
+              <th class="text-center"> {{ SOBOBOROTACT[0] }}  </th>
+                {% for el in range(NSobObAct) %}
+                <td class="text-center"> {{ SobObAct[0][el] }}  </td>
+                {% endfor %}
+            </tr>
+            <tr>
+            <th class="text-center"> {{ SOBOBOROTACT[1] }}  </th>
+                {% for el in range(NSobObAct) %}
+                <td class="{{ 'positive' if SobObAct[1][el] >= 0 else 'negative' }} text-center"> {{ SobObAct[1][el] }}  </td>
+                {% endfor %}
+            </tr>
+            <tr>
+             <th class="text-center"> {{ SOBOBOROTACT[2] }}  </th>
+                {% for el in range(NSobObAct) %}
+                <td class="text-center"> {{ SobObAct[2][el] }}  </td>
+                {% endfor %}
+            </tr>
+          </tbody>
+
+ </table>
+
+    <hr />
+    {% if SobObAct[0][NSobObAct-1] >= 0 %}
+        <p>- В наличии достаточно собственных оборотных средств, покрывающих текущие обязательства без учета запасов,
+            тем самым подчеркивая ликвидность и финансовую устойчивость компании.</p>
+    {% else %}
+        <p>- Есть потенциальные риски связанные с покрытием текущих обязательств и это может сигнализировать о проблемах
+            в операционной деятельности или управлении запасами.</p>
+    {% endif %}
+
+    {% if SobObAct[1][NSobObAct-1] >= 0 %}
+        <p>- Компания обладает высоким уровнем чистого оборотного капитала, что является индикатором финансовой
+            стабильности даже после учета запасов.</p>
+    {% else %}
+        <p>- Есть возможная нехватка средств для поддержания нормальной хозяйственной деятельности и потребности
+            в дополнительном финансировании.</p>
+    {% endif %}
+
+    {% if SobObAct[2][NSobObAct-1] >= 0 %}
+        <p>- Положительное значение COC(3) сигнализирует о хорошей финансовой подушке и возможности компании
+            удовлетворять свои финансовые
+            обязательства, включая погашение займов.</p>
+    {% else %}
+        <p>- Есть потенциальная зависимость от внешнего финансирования и уязвимость перед финансовыми кризисами.</p>
+    {% endif %}
+
+        <p>
+        При этом нужно учитывать приоритет показателей: COC(3) является наиболее комплексным и информативным показателем,
+        так как он учитывает наибольшее количество факторов, включая долгосрочные пассивы и краткосрочные заёмные средства.
+        Он дает более полное понимание о способности компании генерировать достаточный оборотный капитал для покрытия всех
+        типов обязательств. COC(2) также важен, поскольку он показывает чистый оборотный капитал и учитывает
+        долгосрочные пассивы. COC(1) полезен для анализа базовой ликвидности без учета пассивов и заимствований.
+    </p>
+
+
+
+    {% if SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] < 0 %}
+    <p> Поскольку на последний день анализируемого периода ({{YEARS[lYEARS-1]}}) наблюдается недостаток собственных
+        оборотных средств, рассчитанных по всем
+        трем вариантам, финансовое положение организации по данному признаку можно характеризовать как неудовлетворительное.
+    Компания может столкнуться с проблемами при обслуживании долга и покрытии текущих обязательств, что чревато
+        финансовыми затруднениями, возможным банкротством или необходимостью реструктуризации.</p>
+    {% endif %}
+
+        {% if (SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] > 0) or
+    (SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] < 0) or
+    (SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] < 0) %}
+    <p> На последний день анализируемого периода ({{YEARS[lYEARS-1]}}) наблюдается недостаток собственных
+        оборотных средств по двум вариантам. Такой результат говорит о потенциальных проблемах с ликвидностью или капитальной
+        адекватностью. Это может означать проблемы с операционным управлением, такие как неэффективное
+        использование ресурсов или неадекватное финансирование оборотного капитала. </p>
+    {% endif %}
+
+            {% if (SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] > 0) or
+    (SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] < 0 and SobObAct[0][NSobObAct-1] > 0) or
+    (SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] < 0) %}
+    <p> На последний день анализируемого периода ({{YEARS[lYEARS-1]}}) наблюдается недостаток собственных
+        оборотных средств только в одном варианте. Указывает на возможные узкие места в определенной области финансов,
+        которые требуют корректировки, но не обязательно свидетельствуют о критической финансовой ситуации. Здесь стоит
+        сконцентрироваться на устранении конкретных проблем, влияющих на указанный показатель.
+</p>
+    {% endif %}
+
+        {% if SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] > 0 and SobObAct[0][NSobObAct-1] > 0 %}
+    <p> На последний день анализируемого периода ({{YEARS[lYEARS-1]}}) отсутствует недостаток собственных
+        оборотных средств, рассчитанных по всем
+        трем вариантам. Финансовое состояние компании стабильно, и управление как обязательствами, так и активами
+        осуществляется эффективно. Компания может сосредоточить свою деятельность на расширении и развитии.
+</p>
+    {% endif %}
+
+
+</div>
+        <hr/>
+
+        <h3 class="text-dark"> 1.4. Анализ ликвидности </h3>
+        <h4 class="text-dark"> 1.4.1. Расчет коэффициентов ликвидности </h4>
+<div class="container">
+
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">Показатель ликвидности</th>
+                {% for el in range(lYEARS) %}
+                 <th scope="col" class="text-center">Значение на {{YEARS[el]}}</th>
+                {% endfor %}
+                <th scope="col" class="text-center">Изменение показателя</th>
+                <th scope="col" class="text-center">Рекомендованное значение</th>
+            </tr>
+          </thead>
+     <tbody>
+            <tr>
+              <th> {{ KOEFLIKV[0] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if KOE[0][el] >= 2 else 'negative' }} text-center"> {{ KOE[0][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if KOE[0][lYEARS] >= 0 else 'negative' }} text-center"> {{ KOE[0][lYEARS] }}  </td>
+                <td class="text-center"> {{ KOE[0][lYEARS+1] }}  </td>
+            </tr>
+        <tr>
+              <th> {{ KOEFLIKV[1] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if KOE[1][el] >= 0.8 else 'negative' }} text-center"> {{ KOE[1][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if KOE[1][lYEARS] >= 0 else 'negative' }} text-center"> {{ KOE[1][lYEARS] }}  </td>
+                <td class="text-center"> {{ KOE[1][lYEARS+1] }}  </td>
+            </tr>
+        <tr>
+              <th> {{ KOEFLIKV[2] }}  </th>
+                {% for el in range(lYEARS) %}
+                <td class="{{ 'positive' if KOE[2][el] >= 0.2 else 'negative' }} text-center"> {{ KOE[2][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if KOE[2][lYEARS] >= 0 else 'negative' }} text-center"> {{ KOE[2][lYEARS] }}  </td>
+                <td class="text-center"> {{ KOE[2][lYEARS+1] }}  </td>
+            </tr>
+     </tbody>
+ </table>
+
+                    <hr />
+    <h5> 1. Коэффициент текущей (общей) ликвидности </h5>
+    {% if KOE[0][lYEARS-1] >= 2 %}
+        <p>- Компания имеет хороший уровень ликвидности, с большой вероятностью способна оперативно рассчитываться по
+            своим краткосрочным обязательствам.</p>
+    {% endif %}
+
+        {% if KOE[0][lYEARS-1] >= 1.5 and KOE[0][lYEARS-1] < 2 %}
+    <p>- Компания обладает достаточной ликвидностью, но стоит проанализировать структуру активов и обязательств
+        для оптимизации.</p>
+        {% endif %}
+
+        {% if KOE[0][lYEARS-1] >= 1 and KOE[0][lYEARS-1] < 1.5 %}
+    <p>- Уровень ликвидности удовлетворительный, но может потребоваться дополнительное управление активами
+        для улучшения показателя.</p>
+        {% endif %}
+
+        {% if KOE[0][lYEARS-1] < 1 %}
+    <p>- У компании могут возникнуть проблемы с погашением краткосрочных обязательств, что говорит
+        о финансовых трудностях.</p>
+        {% endif %}
+
+        {% if KOE[0][lYEARS] >= 0 %}
+    <p>- Изменение показателя за весь анализируемый период составило {{KOE[0][lYEARS]}}.
+        Рост этого показателя может свидетельствовать об улучшении платежеспособности компании. Это может
+            быть вызвано увеличением текущих активов (например, за счет увеличения сроков платежей дебиторами) или
+            снижением текущих обязательств. Это положительный тренд, указывающий на улучшение финансового
+            здоровья организации.</p>
+    {% else %}
+        <p>- Изменение показателя за весь анализируемый период составило {{KOE[0][lYEARS]}}.
+            Снижение коэффициента текущей ликвидности может быть тревожным сигналом, указывающим на
+            возможные проблемы с ликвидностью компании. Это может произойти из-за сокращения текущих активов
+            (например, из-за проблем с инкассацией дебиторской задолженности) или увеличения текущих обязательств
+            (например, увеличение кредиторской задолженности). Необходимо анализировать причины таких изменений и
+            принимать соответствующие меры для восстановления уровня ликвидности.</p>
+    {% endif %}
+
+
+
+        <h5> 2. Коэффициент быстрой (промежуточной) ликвидности </h5>
+    {% if KOE[1][lYEARS-1] >= 1 %}
+        <p>- У компании достаточно наиболее ликвидных активов для покрытия краткосрочных обязательств, что
+            указывает на высокую финансовую стабильность.</p>
+    {% endif %}
+
+        {% if KOE[1][lYEARS-1] >= 0.5 and KOE[1][lYEARS-1] < 1 %}
+    <p>- Средний уровень ликвидности, компания может испытывать трудности с погашением обязательств в срок,
+        стоит уделять внимание управлению активами.</p>
+        {% endif %}
+
+        {% if KOE[1][lYEARS-1] < 0.5 %}
+    <p>- Низкий уровень ликвидности, что указывает на потенциальные финансовые риски и проблемы с платежеспособностью.</p>
+        {% endif %}
+
+        {% if KOE[1][lYEARS] >= 0 %}
+    <p>- Изменение показателя за весь анализируемый период составило {{KOE[1][lYEARS]}}.
+        Это позитивный сигнал, указывающий на улучшение платежеспособности компании. Рост может быть обусловлен
+            уменьшением объема запасов, увеличением числа денежных средств или других более ликвидных активов, что
+            делает финансовое состояние компании более устойчивым.</p>
+    {% else %}
+        <p>- Изменение показателя за весь анализируемый период составило {{KOE[1][lYEARS]}}.
+    Снижение указывает на ухудшение платежеспособности, что может быть вызвано увеличением объема
+            запасов без соответствующего роста текущих активов, или увеличением текущих обязательств. Это тревожный
+            сигнал, требующий анализа и принятия мер для улучшения финансовой стабильности компании.</p>
+    {% endif %}
+
+    <h5> 3. Коэффициент абсолютной ликвидности </h5>
+
+
+        {% if KOE[2][lYEARS-1] >= 0.2 %}
+        <p>- Компания имеет достаточно денежных средств и краткосрочных финансовых инвестиций для покрытия
+            своих краткосрочных обязательств, что указывает на хорошую ликвидность и финансовую стабильность.</p>
+    {% endif %}
+
+        {% if KOE[2][lYEARS-1] < 0.2 %}
+    <p>- Низкий уровень ликвидности может указывать на риски с платежеспособностью, что требует дополнительного
+        анализа управления денежными потоками и возможного пересмотра финансовых стратегий.</p>
+        {% endif %}
+
+        {% if KOE[2][lYEARS] >= 0 %}
+    <p>- Изменение показателя за весь анализируемый период составило {{KOE[2][lYEARS]}}.
+        Это говорит об улучшении платежеспособности компании. Причины могут включать увеличение объема денежных
+            средств или получение выгодных краткосрочных финансовых инвестиций, что способствует укреплению
+            финансового положения и уменьшает финансовые риски.</p>
+    {% else %}
+        <p>- Изменение показателя за весь анализируемый период составило {{KOE[2][lYEARS]}}. Снижение коэффициента
+            может указывать на возможные проблемы с ликвидностью и платежеспособностью,
+            что может быть связано с увеличением текущих обязательств или уменьшением доступных ликвидных средств.
+            Такая ситуация требует немедленного внимания для анализа причин и корректировки управленческих или
+            финансовых стратегий для восстановления оптимального уровня ликвидности.
+</p>
+    {% endif %}
+
+
+
+
+
+</div>
+
+
+<hr/>
+        <h4 class="text-dark"> 1.4.2. Анализ соотношения активов по степени ликвидности и обязательств по сроку погашения </h4>
+<div class="container">
+
+ <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Активы по степени ликвидности</th>
+                 <th scope="col">На конец отчетного периода</th>
+                <th scope="col"> Нормальное соотношение </th>
+                <th scope="col">Пассивы по сроку погашения</th>
+                <th scope="col">На конец отчетного периода</th>
+                <th scope="col">Излишек/недостаток платежных средств</th>
+            </tr>
+          </thead>
+     <tbody>
+        <tr>
+            <th> {{ SOOT[0][0] }}  </th>
+            <td class="{{ 'positive' if SOOT[0][1] >= SOOT[0][4] else 'negative' }}">{{ SOOT[0][1] }}</td>
+            <th> {{ SOOT[0][2] }}  </th>
+            <th> {{ SOOT[0][3] }}  </th>
+            <td class="{{ 'positive' if SOOT[0][1] >= SOOT[0][4] else 'negative' }}">{{ SOOT[0][4] }}</td>
+            <td class="{{ 'positive' if SOOT[0][1] >= SOOT[0][4] else 'negative' }}">{{ SOOT[0][5] }}</td>
+        </tr>
+     <tr>
+            <th> {{ SOOT[1][0] }}  </th>
+            <td class="{{ 'positive' if SOOT[1][1] >= SOOT[1][4] else 'negative' }}">{{ SOOT[1][1] }}</td>
+            <th> {{ SOOT[1][2] }}  </th>
+            <th> {{ SOOT[1][3] }}  </th>
+            <td class="{{ 'positive' if SOOT[1][1] >= SOOT[1][4] else 'negative' }}">{{ SOOT[1][4] }}</td>
+            <td class="{{ 'positive' if SOOT[1][1] >= SOOT[1][4] else 'negative' }}">{{ SOOT[1][5] }}</td>
+        </tr>
+     <tr>
+             <th> {{ SOOT[2][0] }}  </th>
+            <td class="{{ 'positive' if SOOT[2][1] >= SOOT[2][4] else 'negative' }}">{{ SOOT[2][1] }}</td>
+            <th> {{ SOOT[2][2] }}  </th>
+            <th> {{ SOOT[2][3] }}  </th>
+            <td class="{{ 'positive' if SOOT[2][1] >= SOOT[2][4] else 'negative' }}">{{ SOOT[2][4] }}</td>
+            <td class="{{ 'positive' if SOOT[2][1] >= SOOT[2][4] else 'negative' }}">{{ SOOT[2][5] }}</td>
+        </tr>
+     <tr>
+             <th> {{ SOOT[3][0] }}  </th>
+            <td class="{{ 'positive' if SOOT[3][1] <= SOOT[3][4] else 'negative' }}">{{ SOOT[3][1] }}</td>
+            <th> {{ SOOT[3][2] }}  </th>
+            <th> {{ SOOT[3][3] }}  </th>
+            <td class="{{ 'positive' if SOOT[3][1] <=  SOOT[3][4] else 'negative' }}">{{ SOOT[3][4] }}</td>
+            <td class="{{ 'positive' if SOOT[3][1] <=  SOOT[3][4] else 'negative' }}">{{ SOOT[3][5] }}</td>
+        </tr>
+
+     </tbody>
+ </table>
+ <hr/>
+        {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4] %}
+            <p>- Компания обладает достаточным количеством высоколиквидных активов для покрытия своих краткосрочных
+                обязательств, что указывает на хорошую краткосрочную ликвидность и возможность быстро реагировать на
+                необходимость погашения краткосрочных обязательств. Однако существуют потенциальные проблемы с покрытием
+                более долгосрочных обязательств, что может привести к недостатку долгосрочной стабильности и возможному
+                избытку неликвидных активов. Для улучшения ситуации рекомендуется пересмотреть структуру активов и
+                пассивов, расширить портфель инвестиций в
+                долгосрочные активы и реализовать часть медленно реализуемых активов, а также укрепить финансовую
+                устойчивость через рефинансирование и привлечение долгосрочного капитала.</p>
+        {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4] %}
+            <p>- Компания имеет хороший баланс быстрореализуемых активов по сравнению со среднесрочными пассивами,
+                что обеспечивает способность покрывать обязательства средней длительности. Однако существует нехватка
+                средств для покрытия краткосрочных обязательств и риски, связанные с долгосрочными пассивами. Для улучшения
+                ситуации рекомендуется увеличить количество высоколиквидных активов, провести переговоры с кредиторами о
+                пересмотре условий оплаты или о реструктуризации долга, а также оптимизировать управление кассовыми потоками и
+                финансовое планирование.</p>
+        {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4] %}
+            <p>- Компания обладает достаточным количеством медленно реализуемых активов для покрытия долгосрочных пассивов,
+                что обеспечивает её устойчивость в долгосрочной перспективе. Однако существуют проблемы с ликвидностью в
+                краткосрочном периоде и возможные избытки внеоборотных активов. Для улучшения ситуации рекомендуется
+                повысить общую ликвидность через продажу части медленно реализуемых активов или их использование в
+                качестве залога для получения кредитов, а также улучшить краткосрочную ликвидность за счёт управления
+                оборотными активами.</p>
+        {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4] %}
+            <p>- Компания успешно поддерживает баланс между труднореализуемыми активами и долгосрочными пассивами,
+                что свидетельствует о её способности обеспечивать долгосрочное финансирование инвестиций в активы,
+                которые не могут быть быстро ликвидированы. Однако предприятие может столкнуться
+                с проблемами ликвидности из-за недостатка быстро реализуемых активов для оперативного погашения
+                краткосрочных и среднесрочных обязательств, что создаёт риск для финансовой стабильности в случае
+                непредвиденных расходов или снижения доходов.</p>
+    <p> Для улучшения управления оборотным капиталом, оптимизации структуры капитала, повышения финансовой устойчивости
+        и планирования наличности рекомендуется:
+    </p>
+    <p> - диверсифицировать оборотные активы, увеличив запасы высоколиквидных средств и расширив портфель краткосрочных инвестиций;</p>
+    <p> - улучшить управление дебиторской задолженностью для ускорения оборота средств;</p>
+    <p> - привлечь краткосрочное финансирование для покрытия текущих потребностей в ликвидности, возможно, выйдя на
+        рынок коммерческих бумаг или увеличив объём кредитных линий;</p>
+    <p> - пересмотреть финансовую стратегию для балансирования между долгосрочными и краткосрочными обязательствами;</p>
+    <p> - ввести более строгие критерии для инвестиционных проектов, требующих значительных объёмов труднореализуемых активов;</p>
+    <p> - застраховать операционную деятельность и непредвиденные расходы для снижения финансовых рисков;</p>
+    <p> - разработать план эффективного кассового управления, создать резервные и страховые фонды для неожиданных финансовых нужд;</p>
+    <p> - регулярно проводить финансовый анализ и планирование для своевременного обнаружения дисбаланса в ликвидности
+        и предотвращения финансового кризиса.</p>
+        {% endif %}
+
+ {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4]%}
+    <p> В случае, когда ни одно из неравенств не выполняется, это указывает на серьёзные проблемы в балансе между
+        активами и пассивами компании. В такой ситуации компания сталкивается с высоким риском ликвидности,
+        отсутствием адекватной структуры капитала и увеличением вероятности финансового дисбаланса.
+        Для решения этих проблем необходимо провести немедленный аудит финансового состояния, улучшить управление
+        оборотным капиталом, рефинансировать и привлечь новый капитал, разработать чёткий долгосрочный финансовый
+        план и проконсультироваться с финансовыми экспертами. </p>
+    {% endif %}
+
+
+
+ {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p> Компания находится в идеальном финансовом балансе с точки зрения ликвидности, средне- и долгосрочной
+        финансовой устойчивости.
+        Однако следует постоянно мониторить и поддерживать данный баланс, чтобы не допустить финансовой нестабильности при
+        изменениях в экономике или отраслевой сфере.</p>
+    {% endif %}
+        {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4]%}
+    <p> Компания имеет высокую текучесть активов, что позволяет эффективно управлять краткосрочными и
+        среднесрочными обязательствами, а покрытие долгосрочных обязательств медленно реализуемыми активами
+        укрепляет финансовую стабильность на будущее. Однако гибкость в финансовой стратегии может привести к
+        избыточному инвестированию в медленно реализуемые активы, что создаст риски в долгосрочной перспективе из-за
+        недостаточной ликвидности на случай неожиданных расходов или финансовых шоков. Кроме того, компания недостаточно
+        фокусируется на соотношении труднореализуемых активов и постоянных пассивов.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p>Компания обладает хорошей покрытостью кратко- и среднесрочных обязательств за счёт наличия быстрореализуемых
+        активов, контролирует соотношение труднореализуемых активов к постоянным пассивам, что способствует её финансовой
+        устойчивости. Управление ликвидностью и долгосрочным капиталом поддерживает баланс между срочными платежами и
+        долгосрочными инвестициями. Однако потенциальная недостаточность медленно реализуемых активов для покрытия долгосрочных
+        обязательств может угрожать долгосрочной стабильности компании, а риск снижения доходности от инвестиций в случае
+        избыточного акцента на ликвидные активы может негативно повлиять на финансовое состояние компании.</p>
+    {% endif %}
+
+        {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p>Компания эффективно управляет наиболее срочными и долгосрочными финансовыми потребностями, умеет поддерживать
+        баланс между ликвидностью и инвестированием в труднореализуемые активы, что обеспечивает ей стабильность в
+        долгосрочной перспективе за счёт адекватного соотношения активов и пассивов. Однако существует вероятность,
+        что активов может быть недостаточно для покрытия среднесрочных обязательств, что может вызвать финансовые
+        затруднения при необходимости внезапных выплат. Кроме того, есть риск упустить возможности для быстрой
+        реализации инвестиций из-за чрезмерного акцента на стабильности.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p>Компания эффективно управляет средне- и долгосрочными обязательствами, поддерживая долгосрочную устойчивость
+        благодаря контролю над соотношением труднореализуемых активов и постоянных пассивов, а также обладает способностью
+        оптимизировать финансы и избегать лишних рисков, связанных с операционной деятельностью. Однако недостаточность
+        быстрореализуемых активов может привести к проблемам с ликвидностью в краткосрочной перспективе, особенно в
+        условиях финансового кризиса, а также существуют риски, связанные с управлением текущими платежами и
+        обязательствами.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4]%}
+    <p>Компания имеет хорошее покрытие наиболее срочных и среднесрочных обязательств, что обеспечивает её финансовую
+        стабильность в ближайшее время, однако у неё отсутствуют достаточные медленно реализуемые активы для
+        покрытия долгосрочных обязательств, а также есть риск, что в долгосрочной перспективе превышение
+        труднореализуемых активов над постоянными пассивами может создать дополнительные проблемы.</p>
+    {% endif %}
+
+        {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4]%}
+    <p>Компания обладает достаточным количеством высоколиквидных и медленно реализуемых активов, чтобы покрыть
+        как наиболее срочные, так и долгосрочные обязательства, что обеспечивает ей устойчивость к финансовым
+        потрясениям и ресурсы для долгосрочных планов. Однако недостаток быстрореализуемых активов для покрытия
+        среднесрочных обязательств может привести к финансовым стрессам в случае непредвиденных расходов, а потенциальные
+        проблемы с превышением труднореализуемых активов над постоянными пассивами могут создать дополнительные сложности
+        в долгосрочной перспективе.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] >= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p>Компания покрывает наиболее срочные обязательства и контролирует соотношение труднореализуемых активов и
+        постоянных пассивов, что позволяет стабилизировать основную финансовую структуру и обеспечить долгосрочную
+        устойчивость. Однако недостаточность быстрореализуемых и медленно реализуемых активов для соответствующих
+        обязательств создаёт риски в средне- и долгосрочной перспективе.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] >= SOOT[3][4]%}
+    <p>Компания обладает достаточными быстрореализуемыми и медленно реализуемыми активами для покрытия средне- и
+        долгосрочных обязательств, что обеспечивает устойчивость к изменениям в экономических условиях и позволяет
+        планировать деятельность на длительный период. Однако нехватка высоколиквидных активов для покрытия наиболее
+        срочных обязательств увеличивает риск ликвидности, а возможное превышение труднореализуемых активов угрожает
+        долгосрочной финансовой стабильности.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] >= SOOT[1][4] and SOOT[2][1] <= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p> Компания обеспечивает соответствие быстрореализуемых активов для покрытия среднесрочных обязательств и
+        правильное соотношение труднореализуемых активов к постоянным пассивам, фокусируясь на поддержании
+        сбалансированности кратко- и долгосрочных активов и пассивов. Однако отсутствие достаточных
+        высоколиквидных активов для текущих обязательств создаёт риски в операционной деятельности, а
+        недостаток медленно реализуемых активов не позволяет полностью покрыть долгосрочные обязательства.</p>
+    {% endif %}
+
+    {% if SOOT[0][1] <= SOOT[0][4] and SOOT[1][1] <= SOOT[1][4] and SOOT[2][1] >= SOOT[2][4] and SOOT[3][1] <= SOOT[3][4]%}
+    <p> Компания обладает устойчивостью в плане долгосрочных обязательств и постоянных пассивов благодаря адекватному
+        управлению медленно и труднореализуемыми активами, фокусируясь на долгосрочной стратегии и устойчивости.
+        Однако дефицит высоколиквидных и быстрореализуемых активов подвергает компанию рискам неплатёжеспособности
+        в краткосрочной перспективе.</p>
+    {% endif %}
+    </div>
+
+</div>
+  </div>
+</div>
+<hr/>
+{% if lYEARS > 2 %}
+{% if lYEARSFIN == lYEARS - 1 %}
+        <h1 class="text-light text-center" xmlns="">2. Анализ эффективности деятельности организации</h1>
+    <hr/>
+<div class="container">
+<div class="card bg-light w-100">
+    <div class="card-body">
+
+         <h3 class="text-dark"> 2.1. Обзор результатов деятельности организации </h3>
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Показатель</th>
+                    {% for el in range(lYEARSFIN) %}
+                    <th scope="col" class="text-center">Значение на {{YEARSFIN[el]}}</th>
+                    {% endfor %}
+                    <th scope="col" class="text-center">Изменение показателя</th>
+                     <th scope="col" class="text-center">Изменение показателя %</th>
+                    <th scope="col" class="text-center">Средне-годовая величина</th>
+                </tr>
+                </thead>
+
+                <tbody>
+            <tr>
+              <th> {{ OBZOR[0] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[0][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[0][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[0][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[0][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[0][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[0][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[0][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBZOR[1] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[1][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[1][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[1][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[1][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[1][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[1][lYEARSFIN+1] <= 0 else 'negative' }}"> {{ OBZRESDEYTORG[1][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBZOR[2] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[2][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[2][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[2][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[2][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[2][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[2][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[2][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                 <tr>
+              <th> {{ OBZOR[3] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[3][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[3][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[3][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[3][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[3][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[3][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[3][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                 <tr>
+              <th> {{ OBZOR[4] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[4][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[4][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[4][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[4][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[4][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[4][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[4][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBZOR[5] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[5][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[5][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[5][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[5][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[5][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[5][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[5][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBZOR[6] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[6][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[6][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[6][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[6][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[6][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[6][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[6][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBZOR[7] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[7][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[7][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[7][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[7][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[7][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[7][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[7][lYEARSFIN+2] }}  </td>
+            </tr>
+
+                 <tr>
+              <th> {{ OBZOR[8] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ OBZRESDEYTORG[8][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBZRESDEYTORG[8][lYEARSFIN] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[8][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if OBZRESDEYTORG[8][lYEARSFIN+1] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[8][lYEARSFIN+1] }}  </td>
+                 <td class="{{ 'positive' if OBZRESDEYTORG[8][lYEARSFIN+2] >= 0 else 'negative' }}"> {{ OBZRESDEYTORG[8][lYEARSFIN+2] }}  </td>
+            </tr>
+                </tbody>
+            </table>
+
+            <hr/>
+            <p> - Годовая выручка за {{lYEARSFIN}} последних года {% if OBZRESDEYTORG[0][lYEARSFIN-1] > OBZRESDEYTORG[0][0] %} увеличилась
+             {% else %} уменьшились {% endif %} до {{OBZRESDEYTORG[0][lYEARSFIN-1]}} (на {{OBZRESDEYTORG[0][lYEARSFIN]}} или {{OBZRESDEYTORG[0][lYEARSFIN+1]}}%),
+            {% if OBZRESDEYTORG[0][lYEARSFIN-1] > OBZRESDEYTORG[0][0] %}что свидетельствует о росте продаж и увеличении
+            рыночной активности {% else %} что может указывать на сокращение объемов продаж, потерю рыночных позиций
+            или дестабилизацию спроса{% endif %} </p>
+
+            <p> - Расходы {% if OBZRESDEYTORG[1][lYEARSFIN-1] > OBZRESDEYTORG[1][0] %} увеличились на
+                {{OBZRESDEYTORG[1][lYEARSFIN]}} или {{OBZRESDEYTORG[1][lYEARSFIN+1]}}%, что может быть обусловлено
+                ростом цен на сырье, увеличением издержек труда или ростом административных расходов.
+                Необходимо проверить эффективность расходов и оптимизировать затраты.
+             {% else %} уменьшились на
+                {{OBZRESDEYTORG[1][lYEARSFIN]}} или {{OBZRESDEYTORG[1][lYEARSFIN+1]}}%, что является показателем
+                улучшения управления затратами или снижения стоимости производственных факторов. Это положительно
+                сказывается на финансовом состоянии компании.{% endif %}</p>
+
+
+        <p> - Прибыль от продаж {% if OBZRESDEYTORG[2][lYEARSFIN-1] > OBZRESDEYTORG[2][0] %} выросла на
+                {{OBZRESDEYTORG[2][lYEARSFIN]}} или {{OBZRESDEYTORG[2][lYEARSFIN+1]}}%,что указывает на повышенную
+            эффективность продаж и лучший контроль над операционными расходами. Это улучшает операционные показатели
+            компании.
+             {% else %} уменьшилась на
+                {{OBZRESDEYTORG[2][lYEARSFIN]}} или {{OBZRESDEYTORG[2][lYEARSFIN+1]}}%, что может быть результатом
+            повышенных операционных расходов или снижения цен на продукцию.
+            {% endif %}</p>
+
+    <p> - Показатель EBIT {% if OBZRESDEYTORG[4][lYEARSFIN-1] > OBZRESDEYTORG[4][0] %} увеличился на
+                {{OBZRESDEYTORG[4][lYEARSFIN]}} или {{OBZRESDEYTORG[4][lYEARSFIN+1]}}%, что отражает повышение
+        операционной эффективности и улучшение управления расходами. Является индикатором расширения бизнеса,
+        возможно за счет новых клиентов, новых продуктов или улучшения рыночной позиции. Это указывает на стабильность
+        бизнеса перед
+        лицом финансовых обязательств.
+             {% else %} снизился на
+                {{OBZRESDEYTORG[4][lYEARSFIN]}} или {{OBZRESDEYTORG[4][lYEARSFIN+1]}}%, что может быть связано с
+        увеличением операционных расходов или снижением операционной выручки. Такая тенденция требует внимания к
+        структуре расходов и анализу операционной деятельности.
+            {% endif %}</p>
+
+            <p> - Проценты к уплате {% if OBZRESDEYTORG[5][lYEARSFIN-1] > OBZRESDEYTORG[5][0] %} увеличились на
+                {{OBZRESDEYTORG[5][lYEARSFIN]}} или {{OBZRESDEYTORG[5][lYEARSFIN+1]}}%, что может свидетельствовать о
+                росте заемного капитала и увеличении общей долговой нагрузки. Рост процентных платежей требует анализа
+                условий займов и их влияния на финансовую стабильность.
+             {% else %} сократились на
+                {{OBZRESDEYTORG[5][lYEARSFIN]}} или {{OBZRESDEYTORG[5][lYEARSFIN+1]}}%, что указывает на уменьшение
+                долговой нагрузки или перефинансирование долга на более выгодных условиях. Это положительно
+                сказывается на финансовой нагрузке компании.
+            {% endif %}</p>
+
+            <p> - Налог на прибыль и связанные с ним платежи {% if OBZRESDEYTORG[6][lYEARSFIN-1] > OBZRESDEYTORG[6][0] %} увеличились на
+                {{OBZRESDEYTORG[6][lYEARSFIN]}} или {{OBZRESDEYTORG[6][lYEARSFIN+1]}}%, что может указывать на рост
+                облагаемой прибыли или изменение налогового законодательства. Важно провести аудит налоговых
+                обязательств и их оптимизацию.
+             {% else %} снизились на
+                {{OBZRESDEYTORG[6][lYEARSFIN]}} или {{OBZRESDEYTORG[6][lYEARSFIN+1]}}% что может быть следствием
+                уменьшения облагаемой базы или эффективного налогового планирования. Это содействует улучшению
+                чистой прибыли и повышает финансовую устойчивость.
+            {% endif %}</p>
+
+
+            <p> -Чистая прибыль {% if OBZRESDEYTORG[7][lYEARSFIN-1] > OBZRESDEYTORG[7][0] %} увеличилась на
+                {{OBZRESDEYTORG[7][lYEARSFIN]}} или {{OBZRESDEYTORG[7][lYEARSFIN+1]}}%, что является индикатором
+                успешной экономической деятельности и эффективной реализации бизнес-стратегии. Рост чистой прибыли
+                подчеркивает финансовую здоровость организации.
+             {% else %} сократилась на
+                {{OBZRESDEYTORG[7][lYEARSFIN]}} или {{OBZRESDEYTORG[7][lYEARSFIN+1]}}% что требует анализа причин
+                убытка и пересмотра операционной деятельности. Сокращение чистой прибыли может негативно повлиять на
+                восприятие стейкхолдерами и инвесторами.
+            {% endif %}</p>
+
+            </div>
+
+         <h3 class="text-dark"> 2.2. Анализ рентабельности </h3>
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Показатель</th>
+                    {% for el in range(lYEARSFIN) %}
+                    <th scope="col" class="text-center">Значение в % на {{YEARSFIN[el]}}</th>
+                    {% endfor %}
+                    <th scope="col" class="text-center">Изменение показателя</th>
+                     <th scope="col" class="text-center">Изменение показателя %</th>
+                </tr>
+                </thead>
+
+                 <tbody>
+            <tr>
+              <th> {{ RENTABEL[0] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="{{ 'positive' if RENT[0][el] >= 4 else 'negative' }} text-center"> {{ RENT[0][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT[0][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT[0][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if RENT[0][lYEARSFIN+1] >= 0 else 'negative' }} text-center"> {{ RENT[0][lYEARSFIN+1] }}  </td>
+            </tr>
+            <tr>
+              <th> {{ RENTABEL[1] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="{{ 'positive' if RENT[0][el] >= 5 else 'negative' }} text-center"> {{ RENT[1][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT[1][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT[1][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if RENT[1][lYEARSFIN+1] >= 0 else 'negative' }} text-center"> {{ RENT[1][lYEARSFIN+1] }}  </td>
+            </tr>
+            <tr>
+                  <th> {{ RENTABEL[2] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="{{ 'positive' if RENT[2][el] >= 3 else 'negative' }} text-center"> {{ RENT[2][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT[2][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT[2][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if RENT[2][lYEARSFIN+1] >= 0 else 'negative' }} text-center"> {{ RENT[2][lYEARSFIN+1] }}  </td>
+            </tr>
+
+            <tr>
+                  <th> {{ RENTABEL[3] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ RENT[3][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT[3][lYEARSFIN] >= 0 else 'negative' }} text-center" > {{ RENT[3][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if RENT[3][lYEARSFIN+1] >= 0 else 'negative' }} text-center"> {{ RENT[3][lYEARSFIN+1] }}  </td>
+            </tr>
+
+            <tr>
+                  <th> {{ RENTABEL[4] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="{{ 'positive' if RENT[4][el] >= 1.5 else 'negative' }} text-center" > {{ RENT[4][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT[4][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT[4][lYEARSFIN] }}  </td>
+                <td class="{{ 'positive' if RENT[4][lYEARSFIN+1] >= 0 else 'negative' }} text-center"> {{ RENT[4][lYEARSFIN+1] }}  </td>
+            </tr>
+
+                 </tbody>
+
+            </table>
+        {% if RENT[0][lYEARSFIN-1] >= 4 and RENT[1][lYEARSFIN-1] >= 5 and RENT[2][lYEARSFIN-1] >= 3 %}
+            <p> -Организация демонстрирует превосходную эффективность операционной деятельности. Рентабельность продаж,
+                рентабельность по EBIT и рентабельность по чистой прибыли превышают установленные нормативы, что
+                указывает на успешное управление затратами и эффективное использование капитала. Рекомендуется
+                продолжать текущую стратегию и уделять внимание возможностям для дальнейшего роста и оптимизации.</p>
+        {% endif %}
+
+            {% if (RENT[0][lYEARSFIN-1] < 4 and RENT[1][lYEARSFIN-1] >= 5 and RENT[2][lYEARSFIN-1] >= 3) or
+            (RENT[0][lYEARSFIN-1] >= 4 and RENT[1][lYEARSFIN-1] < 5 and RENT[2][lYEARSFIN-1] >= 3)
+            or (RENT[0][lYEARSFIN-1] >= 4 and RENT[1][lYEARSFIN-1] >= 5 and RENT[2][lYEARSFIN-1] < 3) %}
+            <p> -Анализ показывает, что два из трех ключевых показателей рентабельности находятся на удовлетворительном
+                уровне, что свидетельствует о сильных сторонах в соответствующих аспектах финансовой деятельности
+                организации. Однако один из показателей требует улучшения. </p>
+
+            {% if RENT[0][lYEARSFIN-1] < 4 %}
+            <p> Рентабельность продаж: низкое значение показателя может указывать на высокие затраты на проданные товары или недостаточную
+                ценообразовательную стратегию.
+            Рекомендуется пересмотреть поставщиков с целью уменьшения себестоимости товаров, оптимизировать
+                производственные процессы для сокращения затрат, проанализировать рыночные тренды для более эффективного
+                ценообразования.</p>
+            {% endif %}
+
+            {% if RENT[1][lYEARSFIN-1] < 5 %}
+            <p> Рентабельность продаж по EBIT: низкая рентабельность по EBIT может быть связана с высокими операционными
+                затратами, не соответствующими уровню продаж. Рекомендуется провести аудит операционных расходов с
+                целью их сокращения, рассмотреть возможности автоматизации для снижения операционных расходов, пересмотреть
+                структуры управления и логистики. </p>
+            {% endif %}
+
+            {% if RENT[2][lYEARSFIN-1] < 3 %}
+            <p> Рентабельность продаж по чистой прибыли: если показатель чистой прибыли ниже ожидаемого, проблемы
+                могут крыться в дополнительных финансовых, налоговых или чрезвычайных затратах.
+                Рекомендации: пересмотреть финансовые обязательства и возможности рефинансирования долга под более
+                низкие проценты, оптимизировать налоговую нагрузку, включая использование всех доступных налоговых
+                льгот и вычетов, минимизировать неконтролируемые расходы и оптимизировать управленческие затраты. </p>
+            {% endif %}
+
+        {% endif %}
+
+            {% if (RENT[0][lYEARSFIN-1] < 4 and RENT[1][lYEARSFIN-1] < 5 and RENT[2][lYEARSFIN-1] >= 3) or
+            (RENT[0][lYEARSFIN-1] < 4 and RENT[1][lYEARSFIN-1] >= 5 and RENT[2][lYEARSFIN-1] < 3)
+            or (RENT[0][lYEARSFIN-1] >= 4 and RENT[1][lYEARSFIN-1] < 5 and RENT[2][lYEARSFIN-1] < 3) %}
+            <p> - Результаты анализа выявляют, что только один из трех показателей рентабельности соответствует
+                целевым уровням. Это может указывать на наличие специфических проблем в эксплуатационной эффективности
+                или капиталоемкости бизнеса. Рекомендуется провести дополнительный анализ, чтобы определить причины
+                пониженной производительности и разработать стратегии по их улучшению.</p>
+
+            {% if RENT[0][lYEARSFIN-1] < 4 %}
+            <p> Рентабельность продаж: низкое значение показателя может указывать на высокие затраты на проданные товары или недостаточную
+                ценообразовательную стратегию.
+            Рекомендуется пересмотреть поставщиков с целью уменьшения себестоимости товаров, оптимизировать
+                производственные процессы для сокращения затрат, проанализировать рыночные тренды для более эффективного
+                ценообразования.</p>
+            {% endif %}
+
+            {% if RENT[1][lYEARSFIN-1] < 5 %}
+            <p> Рентабельность продаж по EBIT: низкая рентабельность по EBIT может быть связана с высокими операционными
+                затратами, не соответствующими уровню продаж. Рекомендуется провести аудит операционных расходов с
+                целью их сокращения, рассмотреть возможности автоматизации для снижения операционных расходов, пересмотреть
+                структуры управления и логистики. </p>
+            {% endif %}
+
+            {% if RENT[2][lYEARSFIN-1] < 3 %}
+            <p> Рентабельность продаж по чистой прибыли: если показатель чистой прибыли ниже ожидаемого, проблемы
+                могут крыться в дополнительных финансовых, налоговых или чрезвычайных затратах.
+                Рекомендации: пересмотреть финансовые обязательства и возможности рефинансирования долга под более
+                низкие проценты, оптимизировать налоговую нагрузку, включая использование всех доступных налоговых
+                льгот и вычетов, минимизировать неконтролируемые расходы и оптимизировать управленческие затраты. </p>
+            {% endif %}
+
+        {% endif %}
+
+            {% if RENT[0][lYEARSFIN-1] < 4 and RENT[1][lYEARSFIN-1] < 5 and RENT[2][lYEARSFIN-1] < 3 %}
+            <p> - Текущий анализ указывает на значительные трудности в финансовой деятельности организации, поскольку
+                ни один из ключевых показателей рентабельности не достигает минимально допустимых уровней. Это
+                тревожный сигнал, требующий немедленного и глубокого анализа управленческих и операционных стратегий
+                с последующей корректировкой. Важно провести аудит внутренних процессов, оптимизировать затраты и
+                пересмотреть ценообразование для повышения эффективности и восстанавления рентабельности.</p>
+
+        {% if RENT[0][lYEARSFIN-1] < 4 %}
+            <p> Рентабельность продаж: низкое значение показателя может указывать на высокие затраты на проданные товары или недостаточную
+                ценообразовательную стратегию.
+            Рекомендуется пересмотреть поставщиков с целью уменьшения себестоимости товаров, оптимизировать
+                производственные процессы для сокращения затрат, проанализировать рыночные тренды для более эффективного
+                ценообразования.</p>
+            {% endif %}
+
+            {% if RENT[1][lYEARSFIN-1] < 5 %}
+            <p> Рентабельность продаж по EBIT: низкая рентабельность по EBIT может быть связана с высокими операционными
+                затратами, не соответствующими уровню продаж. Рекомендуется провести аудит операционных расходов с
+                целью их сокращения, рассмотреть возможности автоматизации для снижения операционных расходов, пересмотреть
+                структуры управления и логистики. </p>
+            {% endif %}
+
+            {% if RENT[2][lYEARSFIN-1] < 3 %}
+            <p> Рентабельность продаж по чистой прибыли: если показатель чистой прибыли ниже ожидаемого, проблемы
+                могут крыться в дополнительных финансовых, налоговых или чрезвычайных затратах.
+                Рекомендации: пересмотреть финансовые обязательства и возможности рефинансирования долга под более
+                низкие проценты, оптимизировать налоговую нагрузку, включая использование всех доступных налоговых
+                льгот и вычетов, минимизировать неконтролируемые расходы и оптимизировать управленческие затраты. </p>
+            {% endif %}
+
+        {% endif %}
+
+
+
+        </div>
+
+<p><b> В следующей таблице представлена рентабельность использования вложенного в предпринимательскую деятельность капитала. </b></p>
+
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Показатель рентабельности</th>
+                    {% for el in range(lYEARSFIN) %}
+                    <th scope="col" class="text-center">Значение в % на {{YEARSFIN[el]}}</th>
+                    {% endfor %}
+                    <th scope="col" class="text-center">Изменение показателя</th>
+                     <th scope="col" class="text-center">Нормальное значение</th>
+                </tr>
+                </thead>
+            <tbody>
+            <tr>
+              <th> {{ RENTABEL2[0] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="{{ 'positive' if RENT2[0][el] >= 18 else 'negative' }} text-center"> {{ RENT2[0][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT2[0][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT2[0][lYEARSFIN] }}  </td>
+                <td class="text-center"> {{ RENT2[0][lYEARSFIN+1] }}  </td>
+            </tr>
+
+            <tr>
+              <th> {{ RENTABEL2[1] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="{{ 'positive' if RENT2[1][el] >= 9 else 'negative' }} text-center"> {{ RENT2[1][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT2[1][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT2[1][lYEARSFIN] }}  </td>
+                <td class="text-center"> {{ RENT2[1][lYEARSFIN+1] }}  </td>
+            </tr>
+
+            <tr>
+              <th> {{ RENTABEL2[2] }}  </th>
+                {% for el in range(lYEARSFIN) %}
+                <td class="text-center"> {{ RENT2[2][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if RENT2[2][lYEARSFIN] >= 0 else 'negative' }} text-center"> {{ RENT2[2][lYEARSFIN] }}  </td>
+                <td class="text-center"> {{ RENT2[2][lYEARSFIN+1] }}  </td>
+            </tr>
+
+            </tbody>
+            </table>
+
+            {% if RENT2[0][lYEARSFIN-1] < 18 and RENT2[1][lYEARSFIN-1] < 9 %}
+            <p> - Оба ключевых финансовых показателя (ROE и ROA) находятся ниже установленного минимального порога.
+                Это указывает на низкую финансовую эффективность и потенциальные проблемы в использовании капитала и
+                активов компании. Необходимо провести детальный анализ операционной деятельности, издержек и структуры
+                активов компании, чтобы выявить основные причины низкой рентабельности.</p>
+            <p> - Рекомендуется рассмотреть возможности по сокращению издержек, оптимизации управления активами, и
+                улучшению операционной эффективности. Возможно, требуется реорганизация бизнес-процессов.</p>
+            {% endif %}
+
+            {% if RENT2[0][lYEARSFIN-1] >= 18 and RENT2[1][lYEARSFIN-1] >= 9 %}
+            <p> - Оба показателя (ROE и ROA) превышают минимально необходимые значения, что свидетельствует о высокой
+                эффективности управления капиталом и активами организации.</p>
+            <p> - Рекомендуется мониторить текущие позиции и анализировать внешние факторы, которые могут повлиять
+                на поддержание высоких показателей. Провести ревизию рыночных стратегий и инвестиционных инициатив
+                для расширения бизнеса.</p>
+            {% endif %}
+
+            {% if RENT2[0][lYEARSFIN-1] >= 18 and RENT2[1][lYEARSFIN-1] < 9 %}
+            <p> - ROE превышает установленный порог, что указывает на
+                эффективное использование собственного капитала компании для генерации прибыли. Однако ROA остаётся
+                ниже минимального значения, что может свидетельствовать о неоптимальном использовании всех активов.
+            Такая диспропорция может указывать на то, что компания эффективно использует свой капитал, но имеет
+                избыточные или недостаточно эффективные активы, которые не приносят соответствующей отдачи. Возможно,
+                компания имеет высокий уровень заемных средств, который способствует увеличению ROE при низком ROA.
+</p>
+            <p> - Рекомендуется рассмотреть возможности оптимизации активов, включая продажу неэффективных активов
+                или инвестиции в более высокодоходные активы и проанализировать структуру капитала и стратегию
+                финансирования, возможно, снижение доли заемных средств поможет улучшить ROA.</p>
+            {% endif %}
+
+            {% if RENT2[0][lYEARSFIN-1] < 18 and RENT2[1][lYEARSFIN-1] >= 9 %}
+            <p> - ROA превышает минимальный порог, показывая, что компания эффективно использует свои активы для
+                генерации дохода. Однако ROE остаётся ниже требуемого уровня, что может свидетельствовать о
+                неэффективном использовании собственного капитала. Это может быть признаком того, что большая часть
+                прибыли компании идет на обслуживание заемного капитала, снижая тем самым рентабельность собственного
+                капитала. Также возможно, что у компании мало собственного капитала по сравнению с общими активами.
+</p>
+            <p> - Рекомендуется пересмотреть структуру финансирования и возможно увеличить долю собственного
+                капитала за счет дополнительных инвестиций или реинвестирования прибыли и проанализировать и
+                минимизировать затраты, связанные с заемными средствами.</p>
+            {% endif %}
+            </div>
+
+ <h3 class="text-dark"> 2.3. Расчет показателей деловой активности (оборачиваемости) </h3>
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Показатель оборачиваемости</th>
+                    {% for el in range(lYEARSFIN) %}
+                    <th scope="col" class="text-center">Значение в днях на {{YEARSFIN[el]}}</th>
+                    {% endfor %}
+                    {% for el in range(lYEARSFIN) %}
+                    <th scope="col" class="text-center">Коэфф. {{YEARSFIN[el]}}</th>
+                    {% endfor %}
+                    <th scope="col" class="text-center">Изменение</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+              <th> {{ OBORACHIV[0] }}  </th>
+                {% for el in range(lYEARSFIN+lYEARSFIN) %}
+                <td class="text-center"> {{ OBR[0][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBR[0][lYEARSFIN+lYEARSFIN] <= 0 else 'negative' }} text-center"> {{ OBR[0][lYEARSFIN+lYEARSFIN] }}  </td>
+            </tr>
+
+                 <tr>
+              <th> {{ OBORACHIV[1] }}  </th>
+                {% for el in range(lYEARSFIN+lYEARSFIN) %}
+                <td class="text-center"> {{ OBR[1][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBR[1][lYEARSFIN+lYEARSFIN] <= 0 else 'negative' }} text-center"> {{ OBR[1][lYEARSFIN+lYEARSFIN] }}  </td>
+            </tr>
+
+                 <tr>
+              <th> {{ OBORACHIV[2] }}  </th>
+                {% for el in range(lYEARSFIN+lYEARSFIN) %}
+                <td class="text-center"> {{ OBR[2][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBR[2][lYEARSFIN+lYEARSFIN] <= 0 else 'negative' }} text-center"> {{ OBR[2][lYEARSFIN+lYEARSFIN] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBORACHIV[3] }}  </td>
+                {% for el in range(lYEARSFIN+lYEARSFIN) %}
+                <td class="text-center"> {{ OBR[3][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBR[3][lYEARSFIN+lYEARSFIN] <= 0 else 'negative' }} text-center"> {{ OBR[3][lYEARSFIN+lYEARSFIN] }}  </td>
+            </tr>
+
+
+                <tr>
+              <th> {{ OBORACHIV[4] }}  </th>
+                {% for el in range(lYEARSFIN+lYEARSFIN) %}
+                <td class="text-center"> {{ OBR[4][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBR[4][lYEARSFIN+lYEARSFIN] <= 0 else 'negative' }} text-center"> {{ OBR[4][lYEARSFIN+lYEARSFIN] }}  </td>
+            </tr>
+
+                <tr>
+              <th> {{ OBORACHIV[5] }}  </th>
+                {% for el in range(lYEARSFIN+lYEARSFIN) %}
+                <td class="text-center"> {{ OBR[5][el] }}  </td>
+                {% endfor %}
+                <td class="{{ 'positive' if OBR[5][lYEARSFIN+lYEARSFIN] <= 0 else 'negative' }} text-center"> {{ OBR[5][lYEARSFIN+lYEARSFIN] }}  </td>
+            </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <p> Оборачиваемость активов в среднем за весь рассматриваемый период показывает, что организация получает
+            выручку, равную сумме всех имеющихся активов за {{SRactiv}} календарных дней.</p>
+
+
+         <h3 class="text-dark"> 2.4. Факторный анализ рентабельности собственного капитала </h3>
+        <div class="container">
+
+            <p><b> Рентабельность собственного капитала на конец последнего года анализируемого периода составила
+                {{ RENT2[0][lYEARSFIN - 1] }}. Рентабельность собственного капитала за весь анализируемый период
+                {% if RENT2[0][lYEARSFIN] > 0 %} увеличилась на {{RENT2[0][lYEARSFIN]}}. {% endif %}
+                {% if RENT2[0][lYEARSFIN] < 0 %} уменьшилась на {{RENT2[0][lYEARSFIN]}}. {% endif %}
+                {% if RENT2[0][lYEARSFIN] == 0 %} не изменилась. {% endif %}
+            </b></p>
+            <p> Для установления факторов, повлиявших на изменение, воспользуемся формулой Дюпона.</p>
+
+            {% if lYEARSFIN == 2  %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Фактор</th>
+                    <th scope="col">Изменение рентабельности собственного капитала
+                        на {{YEARSFIN[lYEARSFIN-1]}} и {{YEARSFIN[0]}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+              <th> {% if FACTOR[0] >= 0  %} Рост {% else %} Уменьшение {% endif %} рентабельности деятельности продаж (по чистой прибыли) </th>
+                <td class="{{ 'positive' if FACTOR[0] >= 0 else 'negative' }} text-center"> {{ FACTOR[0] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> {% if FACTOR[1] >= 0  %} Рост {% else %} Уменьшение {% endif %} оборачиваемости активов </th>
+                <td class="{{ 'positive' if FACTOR[1] >= 0 else 'negative' }} text-center"> {{ FACTOR[1] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> {% if FACTOR[2] >= 0  %} Рост {% else %} Уменьшение {% endif %} доли собственного капитала </th>
+                <td class="{{ 'positive' if FACTOR[2] >= 0 else 'negative' }} text-center"> {{ FACTOR[2] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> Итого: изменение рентабельности собственного капитала </th>
+                <td class="{{ 'positive' if FACTOR[3] >= 0 else 'negative' }} text-center"> {{ FACTOR[3] }}  </td>
+            </tr>
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Фактор, в %</th>
+                    <th scope="col">Изменение рентабельности собственного капитала
+                        на {{YEARSFIN[lYEARSFIN-1]}} и {{YEARSFIN[0]}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+              <th> {% if FACTOR[0] >= 0  %} Рост {% else %} Уменьшение {% endif %} рентабельности деятельности продаж (по чистой прибыли) </th>
+                <td class="{{ 'positive' if FACTOR[0] >= 0 else 'negative' }} text-center"> {{ FACTOR[0] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> {% if FACTOR[1] >= 0  %} Рост {% else %} Уменьшение {% endif %} оборачиваемости активов </th>
+                <td class="{{ 'positive' if FACTOR[1] >= 0 else 'negative' }} text-center"> {{ FACTOR[1] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> {% if FACTOR[2] >= 0  %} Рост {% else %} Уменьшение {% endif %} доли собственного капитала </th>
+                <td class="{{ 'positive' if FACTOR[2] >= 0 else 'negative' }} text-center"> {{ FACTOR[2] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> Итого: изменение рентабельности собственного капитала </th>
+                <td class="{{ 'positive' if FACTOR[3] >= 0 else 'negative' }} text-center"> {{ FACTOR[3] }}  </td>
+            </tr>
+                </tbody>
+
+            </table>
+        <hr/>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Фактор, в %</th>
+                    <th scope="col">Изменение рентабельности собственного капитала
+                        на {{YEARSFIN[lYEARSFIN-1]}} и {{YEARSFIN[lYEARSFIN-2]}}</th>
+                </tr>
+                </thead>
+
+                  <tbody>
+
+<tr>
+              <th> {% if FACTOR[4] >= 0  %} Рост {% else %} Уменьшение {% endif %} рентабельности деятельности продаж (по чистой прибыли) </th>
+                <td class="{{ 'positive' if FACTOR[4] >= 0 else 'negative' }} text-center"> {{ FACTOR[4] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> {% if FACTOR[5] >= 0  %} Рост {% else %} Уменьшение {% endif %} оборачиваемости активов </th>
+                <td class="{{ 'positive' if FACTOR[5] >= 0 else 'negative' }} text-center"> {{ FACTOR[5] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> {% if FACTOR[6] >= 0  %} Рост {% else %} Уменьшение {% endif %} доли собственного капитала </th>
+                <td class="{{ 'positive' if FACTOR[6] >= 0 else 'negative' }} text-center"> {{ FACTOR[6] }}  </td>
+            </tr>
+
+                   <tr>
+              <th> Итого: изменение рентабельности собственного капитала </th>
+                <td class="{{ 'positive' if FACTOR[7] >= 0 else 'negative' }} text-center"> {{ FACTOR[7] }}  </td>
+            </tr>
+
+                  </tbody>
+            </table>
+        {% endif %}
+            </div>
+    </div>
+        </div>
+
+
+
+
+
+        </div>
+
+ <h1 class="text-light text-center" xmlns="">3. Рейтингова оценка финансового состояния организации </h1>
+    <hr/>
+<div class="container">
+<div class="card bg-light w-100">
+    <div class="card-body">
+         <p class="text-dark"> Рейтингова оценка финансового состояния организации рассчитана по методу
+             Р.С. Сайфуллин и Г.Г. Кадыкова. </p>
+        <div class="container">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">Показатель</th>
+                    <th scope="col" class="text-center">Нормативное минимальное значение</th>
+                    <th scope="col" class="text-center">Значение на начало периода</th>
+                     <th scope="col" class="text-center">Значение на конец периода</th>
+                </tr>
+                </thead>
+
+                <tbody>
+            <tr>
+              <th> Коэффициент обеспеченности собственными оборотными средствами  </th>
+                <td class="text-center"> ≥ 0.1  </td>
+                <td class="{{ 'positive' if FIN[2][0] >= 0.1 else 'negative' }}"> {{ FIN[2][0] }}  </td>
+                 <td class="{{ 'positive' if FIN[2][lYEARS-1] >= 0.1 else 'negative' }}"> {{ FIN[2][lYEARS-1] }} </td>
+            </tr>
+
+                <tr>
+              <th> Коэффициент текущей (общей) ликвидности </th>
+                <td class="text-center"> ≥ 2  </td>
+                <td class="{{ 'positive' if KOE[0][0] >= 2 else 'negative' }}"> {{ KOE[0][0] }}  </td>
+                 <td class="{{ 'positive' if KOE[0][lYEARS-1] >= 2 else 'negative' }}"> {{ KOE[0][lYEARS-1] }} </td>
+            </tr>
+            <tr>
+                <th> Коэффициент оборачиваемости активов </th>
+                <td class="text-center"> ≥ 1  </td>
+                <td class="{{ 'positive' if OboAktiv[0] >= 2 else 'negative' }}"> {{ OboAktiv[0] }}  </td>
+                 <td class="{{ 'positive' if OboAktiv[1] >= 2 else 'negative' }}"> {{ OboAktiv[1] }} </td>
+            </tr>
+
+            <tr>
+                <th> Рентабельность продаж </th>
+                <td class="text-center"> ≥ 4%  </td>
+                <td class="{{ 'positive' if RENT[0][0] >= 4 else 'negative' }}"> {{ RENT[0][0] }}%  </td>
+                 <td class="{{ 'positive' if RENT[0][lYEARSFIN-1] >= 4 else 'negative' }}"> {{ RENT[0][lYEARSFIN-1] }}% </td>
+            </tr>
+
+                <tr>
+                <th> Рентабельность собственного капитала </th>
+                <td class="text-center"> ≥ 18%  </td>
+                <td class="{{ 'positive' if RENT2[0][0] >= 18 else 'negative' }}"> {{ RENT2[0][0]}}%   </td>
+                 <td class="{{ 'positive' if RENT2[0][lYEARSFIN-1] >= 18 else 'negative' }}"> {{ RENT2[0][lYEARSFIN-1] }}% </td>
+            </tr>
+
+                <tr>
+                <th> Рейтинговое число </th>
+                <td class="text-center"> ≥ 1 </td>
+                <td class="{{ 'positive' if Reiting[0] >= 1 else 'negative' }}"> {{ Reiting[0] }}  </td>
+                 <td class="{{ 'positive' if Reiting[1] >= 1 else 'negative' }}"> {{ Reiting[1] }} </td>
+            </tr>
+
+                </tbody>
+            </table>
+
+            <hr/>
+
+            {% if Reiting[1] >= 2.5 %}
+            <p> Организация на последний год анализируемого периода демонстрирует отличное финансовое состояние и высокий уровень надежности для инвестиций.
+                Компанию можно рассматривать как устойчивого и перспективного партнера.</p>
+            {% endif %}
+
+            {% if Reiting[1] < 2.5 and Reiting[1] >= 2 %}
+            <p> Финансовое состояние организации оценивается как хорошее. Рекомендуется продолжать текущую политику
+                управления активами и пассивами для поддержания стабильного уровня прибыльности и ликвидности.</p>
+            {% endif %}
+
+            {% if Reiting[1] < 2 and Reiting[1] >= 1 %}
+            <p> Финансовое состояние компании является удовлетворительным. Для улучшения финансовой устойчивости
+                рекомендуется увеличить показатели ликвидности и рентабельности через оптимизацию операционных
+                процессов и управление активами.</p>
+            {% endif %}
+
+            {% if Reiting[1] < 1 %}
+            <p> Компания находится в критическом финансовом состоянии. Необходимы срочные меры по улучшению ликвидности,
+                эффективности управления активами и увеличению рентабельности. </p>
+            {% endif %}
+
+            <p> Однако полученный результат следует рассматривать как условный ориентир. Упрощенная модель не учитывает
+                отраслевые особенности деятельности и не претендует не высокую степень точности прогноза.</p>
+    </div>
+
+
+
+</div>
+</div>
+</div>
+{% else %}
+
+Press CTRL+C to quit
+<p><b> Недостаточно данных для формирования анализа о финансовых результатах! Попробуйте внести данные в личном кабинете
+в разделе "Внести данные (Финансовые результаты)"</b></p>
+
+{% endif %}
+
+{% else %}
+
+<p><b> Недостаточно данных для формирования анализа о финансовых результатах! Попробуйте внести данные в личном кабинете
+в разделе "Внести данные (Финансовые результаты)"</b></p>
+
+{% endif %}
+
+<!--Скрипт для txt файла-->
+    <script>
+    $(document).ready(function(){
+    $('#generateReport').click(function(){
+        var inn = {{ inn | tojson | safe }};  // Преобразование массива IMUSH в JSON
+        var data_year1 = {{ data_year1 | tojson | safe }};  // Число из Flask
+        var data_year2 = {{ data_year2 | tojson | safe }};  // Массив из Flask
+
+
+        $.ajax({
+            url: '/generate_report',
+            type: 'GET',
+            traditional: true, // Добавьте эту строку
+            data: {inn: inn, data_year1: data_year1, data_year2: data_year2},  // Передача параметра
+            success: function(response) {
+                window.location.href = '/download_report';
+            }
+        });
+    });
+});
+
+    </script>
+
+<!--Скрипт для pdf файла-->
+
+
+
+
+<style>
+    body{
+    background: -webkit-linear-gradient(left, #FF9133, #F79DA7);
+    border-radius: 10px;
+
+}
+
+.btn-outline-light
+{
+    color: #E7003E;
+    border: 1px solid #E7003E;
+}
+
+.btn-outline-light:hover
+{
+    color: #E7003E;
+}
+
+.container
+{
+    overflow-x: auto; /* или scroll */
+    }
+
+
+th,
+td {
+  padding: 10px;
+}
+
+.card{
+  width: 400px;
+  border: none;
+  border-radius: 10px;
+
+  background-color: #fff;
+}
+
+.cardtab {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.cardtext
+{
+    width: 70%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+
+
+.block{height:310px;background-color:#fff;padding:5px}
+
+.bar{height:310px;background-color:#fff;padding:5px}
+
+.stats{
+
+      background: #20B2AA !important;
+
+    color: #000 !important;
+}
+.articles{
+  font-size:10px;
+  color: #20B2AA;
+}
+.number1{
+  font-weight:500;
+}
+.followers{
+    font-size:10px;
+  color: #a1aab9;
+
+}
+.number2{
+  font-weight:500;
+}
+.rating{
+    font-size:10px;
+  color: #20B2AA;
+}
+.number3{
+  font-weight:500;
+}
+
+.positive { color: green; }
+.negative { color: red; }
+
+.btn-success
+{
+border: 1px solid #e7003e;
+background-color: #FFFFFF;
+color: #E7003E;
+border-radius: 35px;
+stroke-width: 1px;
+font-size: 20px;
+width: 254px;
+height: 48px;
+position: relative;
+z-index: 10;
+margin-left: 30px;
+}
+
+.btn-success:hover {
+  background-color: #EC3063;
+  color: white;
+  border: 1px solid #EC3063;
+  font-size: 20px;
+  width: 254px;
+  height: 48px;
+  position: relative;
+  z-index: 10;
+  margin-left: 30px;
+}
+
+</style>
+
+
+{% endblock %}

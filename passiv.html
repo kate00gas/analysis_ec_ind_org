@@ -1,0 +1,275 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="cardtext">
+    <h1>Введите данные для формы "Бухгалтерский баланс": <br> Пассивы</h1>
+        </div>
+    <br>
+    <form id="form" method="post" class="needs-validation" novalidate>
+
+    <div class="form-group">
+    <div class="cardtab">
+        <div class="form-group">
+       <label for="date" class="cols-sm-2 control-label">Введите дату</label>
+       <div class="cols-sm-10">
+        <div class="input-group">
+         <input type="text" data-mask="date" class="form-control" name="date" id="date" placeholder="Введите дату"/>
+        </div>
+
+       </div>
+      </div>
+    </div>
+        <br>
+     <div class="form-group">
+        <div class="cardtab">
+         <input type="number" class="form-control" name="inn" id="inn" placeholder="ИНН" required>
+        <div class="invalid-feedback"> Вы не ввели ИНН </div> <br>
+
+          <h3> Капитал и резервы </h3>
+        <input type="number" class="form-control" name="pok1" id="pok1" placeholder="Уставной капитал" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+          <input type="number" class="form-control" name="pok2" id="pok2" placeholder="Собственные акции, выкупленные у акционеров" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+          <input type="number" class="form-control" name="pok3" id="pok3" placeholder="Переоценка внеоборотных активов" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+          <input type="number" class="form-control" name="pok4" id="pok4" placeholder="Добавочный капитал (без переоценки)" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+          <input type="number" class="form-control" name="pok5" id="pok5" placeholder="Резервынй капитал" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+           <input type="number" class="form-control" name="pok6" id="pok6" placeholder="Нераспределенная прибыль" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+
+
+
+         <h3> Долгосрочные обязательства </h3>
+           <input type="number" class="form-control" name="pok7" id="pok7" placeholder="Заемные средства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+           <input type="number" class="form-control" name="pok8" id="pok8" placeholder="Отложенные налоговые обязательства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+           <input type="number" class="form-control" name="pok9" id="pok9" placeholder="Оценочные обязательства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+           <input type="number" class="form-control" name="pok10" id="pok10" placeholder="Прочие обязательства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+
+
+          <h3> Краткосрочные обязательства </h3>
+           <input type="number" class="form-control" name="pok11" id="pok11" placeholder="Заемные средства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+         <input type="number" class="form-control" name="pok12" id="pok12" placeholder="Кредиторская задолженность" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+         <input type="number" class="form-control" name="pok13" id="pok13" placeholder="Доходы будущих периодов" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+         <input type="number" class="form-control" name="pok14" id="pok14" placeholder="Оценочные обязательства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+         <input type="number" class="form-control" name="pok15" id="pok15" placeholder="Прочие обязательства" required>
+        <div class="invalid-feedback"> Вы не ввели время сеанса </div> <br>
+
+
+
+
+        <button class="btn btn-primary" type="submit"> Добавить </button>
+    </div>
+    </div>
+         </div>
+    </form>
+
+</div>
+<script>
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
+
+
+
+<!-- Инициализация виджета "Bootstrap datetimepicker" -->
+<script>
+    $(function () {
+      $('#datetimepicker1').datetimepicker(
+        { format: 'HH:mm', locale: 'ru' }
+      );
+    });
+</script>
+
+
+
+<!-- Здесь будет форма -->
+
+
+
+<!-- Подключаем библиотеку jQuery -->
+<script data-require="jquery@3.1.1" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Подключаем локаль библиотеки moment -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/ru.js"></script>
+<!-- Подключаем библиотеку moment -->
+<script data-require="MomentJS@2.10.0" data-semver="2.10.0" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<!-- Подключаем js-файл Bootstrap -->
+<script data-require="bootstrap@3.3.7" data-semver="3.3.7" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Подключаем js-файл библиотеки DateTimePicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+
+
+<style>
+    body{
+    background: -webkit-linear-gradient(left, #FF9133, #F79DA7);
+    border-radius: 10px;
+
+}
+
+.btn-primary
+{
+    background-color: #E7003E;
+    color: white;
+    border: 1px solid #E7003E;
+}
+
+.btn-primary:hover
+{
+    background-color: white;
+    color: #E7003E;
+    border: 1px solid #E7003E;
+
+}
+
+
+.card{
+  width: 400px;
+  border: none;
+  border-radius: 10px;
+
+  background-color: #fff;
+}
+
+.cardtab {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.cardtext
+{
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+.stats{
+
+      background: #20B2AA !important;
+
+    color: #000 !important;
+}
+.articles{
+  font-size:10px;
+  color: #20B2AA;
+}
+.number1{
+  font-weight:500;
+}
+.followers{
+    font-size:10px;
+  color: #a1aab9;
+
+}
+.number2{
+  font-weight:500;
+}
+.rating{
+    font-size:10px;
+  color: #20B2AA;
+}
+.number3{
+  font-weight:500;
+}
+
+</style>
+
+
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <script src="https://unpkg.com/imask"></script> <!-- Подключаем плагин через CDN -->
+    <script src="js/main.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const mask = (dataValue, options) => { // создаем универсальную функцию
+    const elements = document.querySelectorAll(`[data-mask="${dataValue}"]`) // ищем поля ввода по селектору с переданным значением data-атрибута
+    if (!elements) return // если таких полей ввода нет, прерываем функцию
+
+    elements.forEach(el => { // для каждого из полей ввода
+      IMask(el, options) // инициализируем плагин imask для необходимых полей ввода с переданными параметрами маски
+    })
+  }
+
+  // Используем наше функцию mask для разных типов масок
+
+  // Маска для номера телефона
+  mask('phone', {
+    mask: '+{7}(000)000-00-00'
+  })
+
+  // Маска для почтового индекса
+  mask('postalCode', {
+    mask: '000000' // шесть цифр
+  })
+
+  // Маска для даты
+  mask('date', {
+    mask: Date,
+    min: new Date(1900, 0, 1), // минимальная дата 01.01.1900
+  })
+
+  // Маска для числа
+  mask('number', {
+    mask: Number,
+    thousandsSeparator: ' ' // разделитель тысяч в числе
+  })
+
+})
+
+</script>
+
+{% endblock %}
