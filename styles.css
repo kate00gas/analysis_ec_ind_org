@@ -1,0 +1,501 @@
+body
+{
+    font-family: "Raleway", sans-serif;
+    margin: 0;
+}
+
+.header {
+    margin-top: 0px;
+    background-position: center;
+    background-size: cover;
+    padding: 10px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 25px;
+    background-color: #ffffff;
+    left: 50%; /* Разместить элемент в центре экрана по горизонтали */
+    transform: translateX(-50%); /* Смещение на половину ширины элемента для центровки */
+    width: 80%; /* Ширина в процентах от родительского элемента */
+    max-width: 1200px; /* Максимальная ширина */
+
+   position: fixed; /* Используем fixed для фиксации на экране */
+    top: 30px; /* Отступ от верха страницы */
+    z-index: 1000; /* Повышаем z-index чтобы header всегда был наверху */
+
+
+    }
+
+
+.logo, .menu {
+    display: inline-block;
+    }
+.menu li {
+    display: inline-block;
+    padding: 0 15px;
+
+    }
+
+
+
+.containeranaliz {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px; /* Регулировка промежутка между элементами */
+    margin-bottom: 30px;
+}
+
+.containeranaliz div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+h2, h3 {
+    font-weight: 700;
+    margin-left: 156px; /* Отступ слева для заголовков */
+}
+
+h2 {
+    font-size: 60px;
+}
+
+h3 {
+    font-size: 48px;
+}
+
+p.psl {
+    font-weight: 400;
+    font-size: 24px;
+    color: #e7003e;
+    margin-left: 156px; /* Отступ слева для абзаца */
+    margin-top: 15px; /* Отступ между заголовками и абзацем */
+    margin-right: 100px; /* Отступ для абзаца справа */
+    max-width: 900px; /* Регулировка максимальной ширины по мере необходимости */
+}
+
+/* Медиа-запрос для адаптивного уменьшения заголовков и текста на малых экранах */
+@media (max-width: 1200px) {
+    h2 {
+        font-size: 50px;
+         margin-top: 15px;
+    }
+
+    h3 {
+        font-size: 40px;
+    }
+
+    p.psl {
+        font-size: 20px;
+         margin-left: 110px; /* Отступ слева для абзаца */
+        margin-top: 15px; /* Отступ между заголовками и абзацем */
+        margin-right: 100px; /* Отступ для абзаца справа */
+        max-width: 700px; /* Регулировка максимальной ширины по мере необходимости */
+    }
+}
+
+@media (max-width: 992px) {
+    h2 {
+        font-size: 40px;
+        margin-top: 15px;
+    }
+
+    h3 {
+        font-size: 32px;
+    }
+
+    p.psl {
+        font-size: 18px;
+        margin-left: 110px; /* Отступ слева для абзаца */
+        margin-top: 15px; /* Отступ между заголовками и абзацем */
+        margin-right: 100px; /* Отступ для абзаца справа */
+        max-width: 700px; /* Регулировка максимальной ширины по мере необходимости */
+    }
+}
+
+@media (max-width: 768px) {
+    h2 {
+        font-size: 36px;
+       margin-top: 30px;
+        margin-left: 20px;
+    }
+
+    h3 {
+        font-size: 28px;
+        margin-left: 20px;
+    }
+
+    p.psl {
+        font-size: 16px;
+        margin-left: 70px; /* Отступ слева для абзаца */
+        margin-top: 30px; /* Отступ между заголовками и абзацем */
+        margin-right: 70px; /* Отступ для абзаца справа */
+        max-width: 560px; /* Регулировка максимальной ширины по мере необходимости */
+
+    }
+}
+
+@media (max-width: 576px) {
+    h2 {
+        font-size: 32px;
+        margin-top: 70px;
+        margin-left: 20px;
+    }
+
+    h3 {
+        font-size: 24px;
+        margin-left: 20px;
+    }
+
+    p.psl {
+        font-size: 14px;
+        margin-left: 70px; /* Отступ слева для абзаца */
+        margin-top: 70px; /* Отступ между заголовками и абзацем */
+        margin-right: 70px; /* Отступ для абзаца справа */
+        max-width: 560px; /* Регулировка максимальной ширины по мере необходимости */
+    }
+}
+
+
+.block h3 {
+    font-weight: 700;
+    margin-left: 0px; /* Отступ слева для заголовков */
+    margin-bottom: 30px;
+}
+
+.block p {
+    margin-bottom: 30px;
+}
+
+    h1 {
+     font-size: 60px;
+     margin-top: 90px;
+     font-weight: 600;
+    }
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 40px; /* Уменьшенный размер шрифта для мобильных устройств */
+        margin-top: 100px; /* Меньший отступ */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 30px;
+        margin-top: 100px;
+    }
+}
+
+
+
+    p.mainp {
+     font-size: 24px;
+     margin-top: 67px;
+     margin-bottom: 48px;
+    }
+
+@media (max-width: 768px) {
+    p.mainp {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    p.mainp {
+        font-size: 18px;
+    }
+}
+
+img.gre {
+    max-width: 100%; /* Максимальная ширина - 100% от родительского элемента */
+    height: auto; /* Автоматическое определение высоты для сохранения пропорций */
+    margin-top: 30px;
+
+}
+
+@media (max-width: 768px) {
+    img.gre {
+        max-width: 80%;
+         margin-top: 150px;
+
+
+    }
+}
+
+@media (max-width: 480px) {
+    img.gre {
+        max-width: 70%;
+         margin-top: 180px;
+
+    }
+}
+
+
+
+a. voity {
+border-radius: 35px;
+fill: #ec3063;
+stroke-width: 1px;
+stroke: #e7003e;
+}
+
+.btn-primary{
+border: 1px solid #e7003e;
+background-color: #EC3063;
+color: white;
+border-radius: 35px;
+stroke-width: 1px;
+font-size: 20px;
+width: 128px;
+height: 48px;
+padding: 0px 10px;
+display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 36px;
+margin-left: 10px;
+margin-bottom: 10px;
+}
+
+.btn-primary:hover {
+  background-color: white;
+  color: #EC3063;
+  border: 1px solid #e7003e;
+  font-size: 20px;
+  width: 128px;
+height: 48px;
+padding: 0px 10px;
+display: flex;
+  align-items: center;
+  justify-content: center;
+margin-right: 36px;
+margin-left: 10px;
+}
+
+.btn-success
+{
+border: 1px solid #e7003e;
+background-color: #FFFFFF;
+color: #E7003E;
+border-radius: 35px;
+stroke-width: 1px;
+font-size: 20px;
+width: 241px;
+height: 48px;
+position: relative;
+z-index: 10;
+margin-left: 10px;
+margin-bottom: 40px;
+}
+
+.btn-success:hover {
+  background-color: #EC3063;
+  color: white;
+  border: 1px solid #EC3063;
+  font-size: 20px;
+  width: 241px;
+  height: 48px;
+  position: relative;
+  z-index: 10;
+  margin-left: 10px;
+  margin-bottom: 40px;
+}
+
+.menu li a
+{
+font-weight: 600;
+font-size: 20px;
+    color: #00B74A
+
+
+}
+
+.menu li a.activ
+{
+font-weight: 700;
+font-size: 20px;
+    color: #E7003E
+
+}
+
+img.background2 {
+min-height: 100%;
+min-width: auto;
+width: 100%;
+height: auto;
+position: 0;
+top: 0;
+left: 0;
+z-index: -1;
+margin-bottom: 50px;
+
+@media screen and (max-width: 640px){
+img.bg {
+left: 50%;
+margin-left: -320px;
+}
+}
+}
+
+
+
+.main-section {
+    position: relative
+    }
+
+
+.main-section-content {
+    margin-bottom: 90px;
+    }
+
+
+.image-container {
+display: flex;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.back {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-bottom: 80px;
+}
+
+
+
+.carim {
+    width: 95%;
+    height: auto;
+    margin-bottom: 60px;
+    justify-content: center;
+}
+
+/* Стили для больших экранов */
+
+.card-content {
+    position: absolute;
+    right: 34px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: white;
+    border-radius: 50px;
+    width: 808px;
+    height: 701px;
+
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Под тенью для карточки */
+    margin-bottom: 80px;
+}
+
+h4 {
+    font-weight: 700;
+    font-size: 32px;
+    color: #e7003e;
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+p.pcard {
+    font-weight: 400;
+    font-size: 24px;
+    color: #00b74a;
+    margin-top: 25px;
+    margin-left: 25px;
+}
+
+/* Стили для средних экранов (например, планшеты) */
+
+@media (max-width: 992px) {
+    .card-content {
+        right: 20px;
+        width: 90%; /* занимает 90% ширины экрана */
+        height: auto; /* высота автоматически изменяется */
+        border-radius: 30px;
+    }
+
+    h4 {
+        font-size: 28px; /* уменьшенный размер шрифта */
+    }
+
+    p.pcard {
+        font-size: 20px; /* уменьшенный размер шрифта */
+    }
+}
+
+/* Стили для маленьких экранов (например, мобильные телефоны) */
+@media (max-width: 768px) {
+
+    .card-content {
+        right: auto;
+        width: 95%; /* увеличенная ширина карточки */
+        border-radius: 20px; /* меньший радиус скругления */
+        margin-left: 10px;
+    }
+
+    h4 {
+        font-size: 24px; /* ещё меньше */
+        margin-top: 15px;
+        margin-left: 15px;
+    }
+
+    p.pcard {
+        font-size: 18px; /* ещё меньше */
+        margin-top: 15px;
+        margin-left: 15px;
+    }
+
+}
+}
+
+.image-container2 {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.back2 {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+.footer-text {
+    position: absolute;
+    bottom: 10px; /* Adjust this value as needed */
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px; /* Adjust padding as needed */
+    box-sizing: border-box;
+    color: white; /* Ensure text color is distinguishable */
+    z-index: 1;
+}
+
+.left-text
+{
+    margin-left: 50px;
+    color: white;
+}
+
+.right-text {
+    margin-right: 50px;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
